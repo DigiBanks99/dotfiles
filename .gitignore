@@ -1,0 +1,7 @@
+# dotnet
+bin/Debug
+bin/Release
+obj
+
+# Visual Studio
+.vs
