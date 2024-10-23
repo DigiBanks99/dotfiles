@@ -33,10 +33,8 @@ public static class Program
             return;
         }
 
-        Console.WriteLine($"Home directory: {homePath}");
         string dotfilesBinSegment = Path.Combine(".dotfiles", "bin");
         string dotfilesBinPath = homePath.EndsWith(dotfilesBinSegment) ? homePath : Path.Combine(homePath, dotfilesBinSegment);
-        Console.WriteLine($"Dotfiles bin path: {dotfilesBinPath}");
         if (CheckIfCommandExists("pwsh"))
         {
             string shellScriptPath = Path.Combine(dotfilesBinPath, "dotfiles.ps1");
@@ -72,6 +70,7 @@ public static class Program
         startInfo.UseShellExecute = false;
         startInfo.RedirectStandardOutput = true;
         startInfo.RedirectStandardError = true;
+        startInfo.RedirectStandardInput = true;
 
         Process process = new()
         {

@@ -2,6 +2,13 @@
 bin/Debug
 bin/Release
 obj
+dotfiles.sln
+*.pdb
 
 # Visual Studio
 .vs
+
+# Dotfiles
+bin/dotfiles.exe
+bin/dotfiles.dll
+bin/dotfiles
