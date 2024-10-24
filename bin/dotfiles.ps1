@@ -5,9 +5,9 @@ $ErrorActionPreference = "Stop"
 # Set DOTFILES_HOME
 $DIR=$(Split-Path -Parent $MyInvocation.MyCommand.Definition)
 $env:DOTFILES_HOME="$(Split-Path $DIR -Parent)"
-
+$env:DOTFILES_BIN=$(Join-Path $env:DOTFILES_HOME "bin")
 # Load functions
-$functions=$(Join-Path $env:DOTFILES_HOME "bin" "functions.ps1")
+$functions=$(Join-Path "$env:DOTFILES_BIN" "functions.ps1")
 . $functions
 Log-Debug "DOTFILES_HOME: $env:DOTFILES_HOME"
 
@@ -32,7 +32,7 @@ function Verify-PackageManger {
 
         return "brew"
     } else {
-        $packageManagers = @("apt", "yum", "dnf", "zypper", "pacman", "emerge")
+        $packageManagers = @("apt", "yum", "dnf", "zypper", "pacman", "emerge", "winget")
         $packageManager = Read-Host "What package manager do you use ($packageManagers)? "
         if (-not (Check-Command $packageManager)) {
             Log-Error "Package manager not found: $packageManager"
@@ -50,20 +50,21 @@ Log-Debug "Package manager: $packageManager"
 Log-Debug "Profile: $env:DOTFILES_PROFILE_NAME"
 if ($env:DOTFILES_PROFILE_NAME -eq $null) {
     Log-Debug "Profile not set. Prompting user..."
-    $profile = Read-Host -Prompt "What profile are you configuring?"
+    $profile=$(Read-Host -Prompt "What profile are you configuring?")
     Log-Debug "Profile: $profile"
     $env:DOTFILES_PROFILE_NAME=$profile
 }
 
 # Load profile modules
 Log-Info "Reading profile modules..."
-$modulesFile=$(Join-Path $env:DOTFILES_HOME "modules" "modules.ps1")
+$modulesFolder=$(Join-Path $env:DOTFILES_HOME "modules")
+$modulesFile=$(Join-Path $modulesFolder "modules.ps1")
 Log-Debug "Modules file: $modulesFile"
 $modules=@($(. $modulesFile))
 Log-Debug "Modules: $modules"
 
 foreach ($module in $modules) {
-    $modulePath=$(Join-Path $env:DOTFILES_HOME "modules" $module)
+    $modulePath=$(Join-Path $modulesFolder $module)
     $moduleFile=$(Join-Path $modulePath "setup.ps1")
     Log-Info "Installing module: $module..."
     . $moduleFile

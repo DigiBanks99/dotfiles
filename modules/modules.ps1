@@ -1,6 +1,6 @@
 #!/usr/bin/env pwsh
 
-$functions=$(Join-Path $env:DOTFILES_HOME "bin" "functions.ps1")
+$functions=$(Join-Path $env:DOTFILES_BIN "functions.ps1")
 . $functions
 
 $PROFILE=$env:DOTFILES_PROFILE_NAME
@@ -11,7 +11,8 @@ $modules = @('git', 'base-cli', 'vscode', 'wsl', 'podman', 'screen-to-gif') # th
 Log-Debug "Base modules: $modules"
 
 Log-Debug "Loading profile modules..."
-$profileModulesFile = Join-Path $env:DOTFILES_HOME "modules" "$($PROFILE).ps1"
+$modulesFolder = Join-Path $env:DOTFILES_HOME "modules"
+$profileModulesFile = Join-Path $modulesFolder "$($PROFILE).ps1"
 $profileModules = . $profileModulesFile
 Log-Debug "Profile modules: $profileModules"
 
