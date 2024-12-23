@@ -10,8 +10,10 @@ pwsh -Command "Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -Al
 pwsh -Command "Install-Module -Name PSReadLine -Scope CurrentUser -Force -AllowClobber"
 pwsh -Command "Install-Module -Name powershell-yaml -Scope CurrentUser -Force -AllowClobber"
 
-
 Log-Info "Configuring PowerShell profile"
-mkdir $env:USERPROFILE/.config/powershell -ErrorAction SilentlyContinue
-Remove-Item -Path $env:USERPROFILE/.config/powershell/Microsoft.PowerShell_profile.ps1 -ErrorAction SilentlyContinue
-New-Item -ItemType SymbolicLink -Path $env:USERPROFILE/.config/powershell/Microsoft.PowerShell_profile.ps1 -Target $env:DOTFILES_HOME/modules/powershell/.config/Microsoft.PowerShell_profile.ps1
+$profileInfo=$profile | select CurrentUserCurrentHost
+$profilePath=$profile.CurrentUserCurrentHost
+Remove-Item -Path "$profilePath" -ErrorAction SilentlyContinue
+New-Item -ItemType SymbolicLink -Path "$profilePath" -Target $env:DOTFILES_HOME/modules/powershell/.config/Microsoft.PowerShell_profile.ps1
+
+. $PROFILE
