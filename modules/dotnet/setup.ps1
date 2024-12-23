@@ -1,7 +1,8 @@
-. $env:DOTFILES_HOME/bin/functions.ps1
+. $env:DOTFILES_HOME/bin/bootstrap.ps1
 
 # Install .NET SDK
 winget install -e --id "Microsoft.DotNet.Sdk.8" -h
+winget install -e --id "Microsoft.DotNet.Sdk.9" -h
 
 # Install .NET CLI tools
 Log-Info "Installing .NET CLI tools..."

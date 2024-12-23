@@ -7,18 +7,29 @@ $env:PATH="$env:PATH;$DOTFILES_BIN"
 
 Import-Module posh-git
 
-oh-my-posh init pwsh "$DOTFILES_HOME/modules/powershell/.config/digi.omp.json" | Invoke-Expression
+oh-my-posh init pwsh  --config "$DOTFILES_HOME/modules/oh-my-posh/.config/omp.json" | Invoke-Expression
 
 Import-Module Terminal-Icons
 Import-Module PSReadLine
 Import-Module powershell-yaml
 
-# Start podman machine
-$podmanMachineStatus = (podman machine info | Out-String | ConvertFrom-Yaml).host.machineState
-if ($podmanMachineStatus -eq "Stopped" -and $env:PODMAN_STARTING -eq $false) {
-    $env:PODMAN_STARTING = $true
-    podman machine start -q
-    $env:PODMAN_STARTING = $false
+Set-Alias -Name docker -Value podman
+
+Set-Alias -Name zsh -Value "wsl -e /bin/zsh"
+
+# Configure aliases
+function poof {
+    git add .; git amendne; git poof
 }
 
-Set-Alias -Name docker -Value podman
+function godot {
+    pwsh -noprofile -command "Start-Process 'Godot v4.2.exe'"
+}
+
+function godotlts {
+    pwsh -noprofile -command "Start-Process 'Godot v4.1.2.exe'"
+}
+
+function touch {
+    New-Item -Name $args[0] -Type File
+}

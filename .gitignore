@@ -12,3 +12,10 @@ dotfiles.sln
 bin/dotfiles.exe
 bin/dotfiles.dll
 bin/dotfiles
+
+# Backup files
+*.bak
+
+# Personalization
+*omp.json
+completions.ps1

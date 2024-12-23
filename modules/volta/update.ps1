@@ -1,6 +1,6 @@
 . $env:DOTFILES_HOME/bin/bootstrap.ps1
 
-winget install -e --id "Volta.Volta" -h
+winget update -e --id "Volta.Volta" -h
 
 # Setup Node
 Log-Info "Setting up Node..."

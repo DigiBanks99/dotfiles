@@ -1,9 +1,12 @@
 function Get-LogLevel {
-    $logLevel = $env:DOTFILES_LOG_LEVEL
-    switch ($logLevel) {
+    switch ($env:DOTFILES_LOG_LEVEL) {
+        "1" { return 1 }
         "ERROR" { return 1 }
+        "2" { return 2 }
         "WARN" { return 2 }
+        "3" { return 3 }
         "INFO" { return 3 }
+        "4" { return 4 }
         "DEBUG" { return 4 }
         Default { return 3 }
     }
@@ -55,5 +58,22 @@ function Get-Os {
         return "Darwin"
     } else {
         return "Nix"
+    }
+}
+
+function Execute-Elevated {
+    $OS = Get-Os
+    switch ($OS) {
+        "windows" {
+            if (Check-Command "sudo") {
+                Log-Debug "Running command elevated: $args"
+                sudo run --inline $args
+            } else {
+                $args | Invoke-Expression
+            }
+        }
+        "Nix" {
+            sudo $args
+        }
     }
 }
