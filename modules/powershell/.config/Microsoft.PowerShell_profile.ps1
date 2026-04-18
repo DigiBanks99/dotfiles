@@ -4,6 +4,7 @@
 $DOTFILES_HOME=$(Join-Path $env:USERPROFILE ".dotfiles")
 $DOTFILES_BIN=$(Join-Path $DOTFILES_HOME "bin")
 $LOCAL_BIN=$(Join-Path $env:USERPROFILE ".local\bin")
+$env:PNPM_HOME=$LOCAL_BIN
 $env:PATH="$DOTFILES_BIN;$LOCAL_BIN;C:\Program Files\Rust stable GNU 1.93\bin;$env:PATH"
 
 $env:PROGRAMS=$(Join-Path "C:" "Programs")

@@ -10,9 +10,39 @@ pwsh -Command "Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -Al
 pwsh -Command "Install-Module -Name PSReadLine -Scope CurrentUser -Force -AllowClobber"
 
 Log-Info "Configuring PowerShell profile"
-$profileInfo=$profile | select CurrentUserCurrentHost
-$profilePath=$profile.CurrentUserCurrentHost
-Log-Info "Removing existing profile..."
-Remove-Item -Path "$profilePath" -ErrorAction SilentlyContinue
+$profilePath = $null
+if ($PROFILE -is [string] -and -not [string]::IsNullOrWhiteSpace($PROFILE)) {
+	$profilePath = $PROFILE
+} elseif ($PROFILE -and $PROFILE.PSObject.Properties.Name -contains "CurrentUserCurrentHost") {
+	$profilePath = $PROFILE.CurrentUserCurrentHost
+}
+
+if ([string]::IsNullOrWhiteSpace($profilePath)) {
+	$documentsPath = [Environment]::GetFolderPath("MyDocuments")
+	$profilePath = Join-Path $documentsPath "PowerShell/Microsoft.PowerShell_profile.ps1"
+}
+
+$profileDirectory = Split-Path -Parent $profilePath
+$profileTarget = Join-Path $env:DOTFILES_HOME "modules/powershell/.config/Microsoft.PowerShell_profile.ps1"
+
+if (-not (Test-Path $profileDirectory)) {
+	Log-Info "Creating PowerShell profile directory..."
+	New-Item -ItemType Directory -Path $profileDirectory -Force | Out-Null
+}
+
+Log-Debug "The profile path is: $profilePath"
+
+$existingProfile = Get-Item -Path $profilePath -Force -ErrorAction SilentlyContinue
+if ($existingProfile) {
+	$existingTarget = @($existingProfile.Target) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+	if ($existingProfile.LinkType -eq "SymbolicLink" -and $existingTarget -contains $profileTarget) {
+		Log-Info "PowerShell profile link already configured."
+		return
+	}
+
+	Log-Info "Removing existing PowerShell profile..."
+	Remove-Item -Path $profilePath -Force
+}
+
 Log-Info "Creating symbolic link for profile..."
-New-Item -ItemType SymbolicLink -Path "$profilePath" -Target $env:DOTFILES_HOME/modules/powershell/.config/Microsoft.PowerShell_profile.ps1
+New-Item -ItemType SymbolicLink -Path $profilePath -Target $profileTarget | Out-Null
