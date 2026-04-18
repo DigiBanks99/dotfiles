@@ -3,6 +3,18 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULE_CONFIG="$SCRIPT_DIR/.config"
 
+# Install Ollama
+echo "[INF]: Installing Ollama..."
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install ollama 2>/dev/null || true
+elif command -v apt-get &>/dev/null; then
+    curl -fsSL https://ollama.com/install.sh | sh
+elif command -v snap &>/dev/null; then
+    sudo snap install ollama 2>/dev/null || true
+else
+    echo "[WARN]: No supported package manager found for Ollama. Install manually from https://ollama.com"
+fi
+
 # Install GitHub Copilot CLI
 echo "[INF]: Installing GitHub Copilot CLI..."
 if [[ "$OSTYPE" == "darwin"* ]]; then
