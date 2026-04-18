@@ -8,12 +8,11 @@ Log-Info "Installing PowerShell modules (posh-git, Terminal-Icons, PSReadLine, p
 pwsh -Command "Install-Module -Name posh-git -Scope CurrentUser -Force -AllowClobber"
 pwsh -Command "Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -AllowClobber"
 pwsh -Command "Install-Module -Name PSReadLine -Scope CurrentUser -Force -AllowClobber"
-pwsh -Command "Install-Module -Name powershell-yaml -Scope CurrentUser -Force -AllowClobber"
 
 Log-Info "Configuring PowerShell profile"
 $profileInfo=$profile | select CurrentUserCurrentHost
 $profilePath=$profile.CurrentUserCurrentHost
+Log-Info "Removing existing profile..."
 Remove-Item -Path "$profilePath" -ErrorAction SilentlyContinue
+Log-Info "Creating symbolic link for profile..."
 New-Item -ItemType SymbolicLink -Path "$profilePath" -Target $env:DOTFILES_HOME/modules/powershell/.config/Microsoft.PowerShell_profile.ps1
-
-. $PROFILE

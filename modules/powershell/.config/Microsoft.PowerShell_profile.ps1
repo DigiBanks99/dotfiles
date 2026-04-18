@@ -3,19 +3,22 @@
 # Add dotfiles bin
 $DOTFILES_HOME=$(Join-Path $env:USERPROFILE ".dotfiles")
 $DOTFILES_BIN=$(Join-Path $DOTFILES_HOME "bin")
-$env:PATH="$env:PATH;$DOTFILES_BIN"
+$LOCAL_BIN=$(Join-Path $env:USERPROFILE ".local\bin")
+$env:PATH="$DOTFILES_BIN;$LOCAL_BIN;C:\Program Files\Rust stable GNU 1.93\bin;$env:PATH"
+
+$env:PROGRAMS=$(Join-Path "C:" "Programs")
 
 Import-Module posh-git
-
-oh-my-posh init pwsh  --config "$DOTFILES_HOME/modules/oh-my-posh/.config/omp.json" | Invoke-Expression
-
-Import-Module Terminal-Icons
 Import-Module PSReadLine
-Import-Module powershell-yaml
+Import-Module Terminal-Icons
+
+oh-my-posh init pwsh --config "$DOTFILES_HOME/modules/oh-my-posh/.config/omp.json" | Invoke-Expression
+
+mise activate pwsh | Out-String | Invoke-Expression
+
+if ($env:TERM_PROGRAM -eq "vscode") { . "$(code --locate-shell-integration-path pwsh)" }
 
 Set-Alias -Name docker -Value podman
-
-Set-Alias -Name zsh -Value "wsl -e /bin/zsh"
 
 # Configure aliases
 function poof {
@@ -32,4 +35,8 @@ function godotlts {
 
 function touch {
     New-Item -Name $args[0] -Type File
+}
+
+function zsh {
+    wsl ~ -e /bin/zsh
 }
