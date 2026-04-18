@@ -69,7 +69,13 @@ function Execute-Elevated {
                 Log-Debug "Running command elevated: $args"
                 sudo run --inline $args
             } else {
-                $args | Invoke-Expression
+                $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+                if ($isAdmin) {
+                    $args | Invoke-Expression
+                } else {
+                    Log-Warn "'sudo' not found and session is not elevated. Relaunching in an elevated terminal..."
+                    Start-Process pwsh -Verb RunAs -ArgumentList "-NoExit", "-Command", "& { $args }"
+                }
             }
         }
         "Nix" {
