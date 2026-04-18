@@ -61,6 +61,22 @@ function Get-Os {
     }
 }
 
+function Resolve-Profile {
+    $cacheFile = Join-Path $env:USERPROFILE ".dotfiles-profile"
+    if (Test-Path $cacheFile) {
+        $cached = (Get-Content $cacheFile -Raw).Trim()
+        if ($cached) {
+            Log-Info "Using cached profile: $cached"
+            $env:DOTFILES_PROFILE_NAME = $cached
+            return $cached
+        }
+    }
+    $profile = (Read-Host -Prompt "What profile are you configuring?").Trim()
+    Set-Content -Path $cacheFile -Value $profile -Encoding UTF8
+    $env:DOTFILES_PROFILE_NAME = $profile
+    return $profile
+}
+
 function Execute-Elevated {
     $OS = Get-Os
     switch ($OS) {

@@ -39,11 +39,10 @@ Log-Debug "Package manager: $packageManager"
 # Set profile if not set
 Log-Debug "Profile: $env:DOTFILES_PROFILE_NAME"
 if ($env:DOTFILES_PROFILE_NAME -eq $null) {
-    Log-Debug "Profile not set. Prompting user..."
-    $profile=$(Read-Host -Prompt "What profile are you configuring?")
-    Log-Debug "Profile: $profile"
-    $env:DOTFILES_PROFILE_NAME=$profile
+    Log-Debug "Profile not set. Resolving..."
+    Resolve-Profile
 }
+Log-Debug "Profile: $env:DOTFILES_PROFILE_NAME"
 
 # Load profile modules
 Log-Info "Reading profile modules..."
