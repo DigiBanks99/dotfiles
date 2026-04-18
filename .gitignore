@@ -19,3 +19,19 @@ bin/dotfiles
 # Personalization
 *omp.json
 completions.ps1
+.CurrentUserCurrentHost
+
+# Agents module - runtime state (written by Copilot CLI at runtime)
+modules/agents/.config/.copilot/logs/
+modules/agents/.config/.copilot/pkg/
+modules/agents/.config/.copilot/session-state/
+modules/agents/.config/.copilot/restart/
+modules/agents/.config/.copilot/ide/
+modules/agents/.config/.copilot/command-history-state.json
+# Generated from config.template.json at setup time
+modules/agents/.config/.copilot/config.json
+# Skill evaluation workspace directories
+modules/agents/.config/.agents/skills/*-workspace/
+# Python compiled files
+modules/agents/.config/.agents/skills/**/__pycache__/
+modules/agents/.config/.agents/skills/**/*.pyc

@@ -1,0 +1,44 @@
+{
+  "skill_name": "dotnet-testing-preferences",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Write unit tests for OrderCalculator.CalculateTotal so that discounts and tax rules are covered.",
+      "expected_output": "xUnit v3 tests using NSubstitute and Shouldly, with MethodName_StateUnderTest naming and grouped helper assertions.",
+      "files": [],
+      "expectations": [
+        "Includes NSubstitute usage for collaborators.",
+        "Includes Shouldly assertions.",
+        "Uses MethodName_StateUnderTest naming pattern for tests.",
+        "Groups assertions through helper methods for shared context."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Add integration tests for POST /api/orders.",
+      "expected_output": "Integration tests using TestContainers and public API verification of HTTP response + persisted state.",
+      "files": [],
+      "expectations": [
+        "Uses TestContainers for PostgreSQL integration.",
+        "Uses WebApplicationFactory or equivalent in-process API host wiring.",
+        "Verifies both HTTP response and persisted database state.",
+        "Does not use in-memory database providers.",
+        "Uses Shouldly-style assertions in generated test code.",
+        "Uses MethodName_StateUnderTest naming without expectation/result suffixes in test method names."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Create end-to-end tests for login and order placement flows in a .NET app.",
+      "expected_output": "Playwright-based end-to-end tests validating real user flows and observable outcomes.",
+      "files": [],
+      "expectations": [
+        "Uses Playwright for end-to-end test implementation.",
+        "Uses C# Microsoft.Playwright style for .NET context.",
+        "Covers both login and order placement flows.",
+        "Includes at least one negative-path scenario.",
+        "Uses helper assertions or reusable helper flows to reduce duplicated setup."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "banner": "never",
+  "renderMarkdown": true,
+  "theme": "auto",
+  "show_reasoning": false,
+  "skillDirectories": [
+    "{{USERPROFILE}}/.agents/skills"
+  ],
+  "allowed_urls": [
+    "https://github.com",
+    "https://raw.githubusercontent.com"
+  ],
+  "trustedFolders": []
+}
