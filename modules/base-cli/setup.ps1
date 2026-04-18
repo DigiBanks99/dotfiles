@@ -8,3 +8,22 @@ Log-Info "Installing Azure CLI"
 winget install -e --id "Microsoft.AzureCLI" -h
 Log-Info "Installing OhMyPosh"
 winget install -e --id "JanDeDobbeleer.OhMyPosh" -h
+
+Log-Info "Configuring Windows Terminal"
+$wtSettingsPath = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
+$wtSettingsTarget = Join-Path $env:DOTFILES_HOME "modules/base-cli/.config/settings.json"
+
+$existingSettings = Get-Item -Path $wtSettingsPath -Force -ErrorAction SilentlyContinue
+if ($existingSettings) {
+	$existingTarget = @($existingSettings.Target) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+	if ($existingSettings.LinkType -eq "SymbolicLink" -and $existingTarget -contains $wtSettingsTarget) {
+		Log-Info "Windows Terminal settings link already configured."
+		return
+	}
+
+	Log-Info "Removing existing Windows Terminal settings..."
+	Remove-Item -Path $wtSettingsPath -Force
+}
+
+Log-Info "Creating symbolic link for Windows Terminal settings..."
+New-Item -ItemType SymbolicLink -Path $wtSettingsPath -Target $wtSettingsTarget | Out-Null
