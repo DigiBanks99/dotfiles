@@ -5,8 +5,8 @@ set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$DIR/bootstrap.sh"
 
-verify_package_manager() {
-    log_info "Verifying package manager..."
+resolve_package_manager() {
+    log_info "Resolving package manager..."
     if [[ "$OS" == "Darwin" ]]; then
         check_command brew || { log_error "Homebrew is not installed."; exit 1; }
         echo "brew"
@@ -14,15 +14,10 @@ verify_package_manager() {
         check_command winget || { log_error "winget not found."; exit 1; }
         echo "winget"
     else
-        local managers=("apt" "yum" "dnf" "zypper" "pacman" "emerge")
-        read -rp "What package manager do you use (${managers[*]})? " pm
-        check_command "$pm" || { log_error "Package manager not found: $pm"; exit 1; }
-        echo "$pm"
+        resolve_distro
+        get_package_manager
     fi
 }
-
-package_manager="$(verify_package_manager)"
-log_debug "Package manager: $package_manager"
 
 log_debug "Profile: ${DOTFILES_PROFILE_NAME:-}"
 if [[ -z "${DOTFILES_PROFILE_NAME:-}" ]]; then
@@ -30,6 +25,9 @@ if [[ -z "${DOTFILES_PROFILE_NAME:-}" ]]; then
     resolve_profile
 fi
 log_debug "Profile: $DOTFILES_PROFILE_NAME"
+
+package_manager="$(resolve_package_manager)"
+log_debug "Package manager: $package_manager"
 
 log_info "Reading profile modules..."
 modules_folder="$DOTFILES_HOME/modules"

@@ -59,3 +59,55 @@ resolve_profile() {
     echo "$profile" > "$cache_file"
     export DOTFILES_PROFILE_NAME="$profile"
 }
+
+resolve_distro() {
+    local cache_file="$HOME/.dotfiles-distro"
+    if [[ -f "$cache_file" ]]; then
+        local cached
+        cached="$(cat "$cache_file" | tr -d '[:space:]')"
+        if [[ -n "$cached" ]]; then
+            log_info "Using cached distro: $cached"
+            export DOTFILES_DISTRO="$cached"
+            return
+        fi
+    fi
+
+    local detected=""
+    if [[ -f /etc/os-release ]]; then
+        detected="$(grep -E '^ID=' /etc/os-release | cut -d= -f2 | tr -d '"' | tr '[:upper:]' '[:lower:]')"
+    fi
+
+    local known_distros=("ubuntu" "fedora" "nix")
+    local distro=""
+
+    for d in "${known_distros[@]}"; do
+        if [[ "$detected" == "$d" ]]; then
+            distro="$detected"
+            break
+        fi
+    done
+
+    if [[ -z "$distro" ]]; then
+        if [[ -n "$detected" ]]; then
+            log_warn "Unrecognised distro: '$detected'."
+        fi
+        read -rp "What Linux distro are you on (ubuntu / fedora / nix)? " distro
+        distro="$(echo "$distro" | tr '[:upper:]' '[:lower:]' | tr -d '[:space:]')"
+    fi
+
+    echo "$distro" > "$cache_file"
+    export DOTFILES_DISTRO="$distro"
+    log_info "Distro resolved: $DOTFILES_DISTRO"
+}
+
+get_package_manager() {
+    case "${DOTFILES_DISTRO:-}" in
+        ubuntu)  echo "apt-get" ;;
+        fedora)  echo "dnf" ;;
+        nix)     echo "nix-env" ;;
+        *)
+            log_error "Unsupported or unset distro: '${DOTFILES_DISTRO:-}'. Run 'resolve_distro' first."
+            return 1
+            ;;
+    esac
+}

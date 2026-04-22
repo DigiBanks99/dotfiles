@@ -12,6 +12,10 @@ if [[ -z "${DOTFILES_PROFILE_NAME:-}" ]]; then
 fi
 log_debug "Profile: $DOTFILES_PROFILE_NAME"
 
+if [[ "$OS" != "Darwin" && "$OS" != "windows" ]]; then
+    resolve_distro
+fi
+
 log_info "Reading profile modules..."
 modules_folder="$DOTFILES_HOME/modules"
 modules_file="$modules_folder/modules.sh"
