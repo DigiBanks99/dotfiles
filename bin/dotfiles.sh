@@ -5,6 +5,7 @@ set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 sub_command="${1:-}"
+echo "Running 'dotfiles $sub_command'..."
 case "$sub_command" in
     setup)
         bash "$DIR/dotfiles-setup.sh"

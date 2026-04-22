@@ -14,10 +14,11 @@ PACKAGES=(
     stow
     wget
     zsh
+    zstd
 )
 
 echo "[INF]: Updating package index..."
-sudo apt-get update -y
+    sudo apt-get update -y || { log_warn "apt-get update failed; continuing"; }
 
 echo "[INF]: Upgrading base packages..."
 sudo apt-get install -y --only-upgrade "${PACKAGES[@]}"

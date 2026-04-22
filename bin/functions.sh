@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# if DOTFILES_LOG_LEVEL is not yet set, default to INFO
+if [[ -z "${DOTFILES_LOG_LEVEL:-}" ]]; then
+    export DOTFILES_LOG_LEVEL="INFO"
+fi
+
 get_log_level() {
     case "${DOTFILES_LOG_LEVEL:-}" in
         1|ERROR) echo 1 ;;
@@ -15,15 +20,15 @@ log_error() {
 }
 
 log_warn() {
-    [[ "$(get_log_level)" -ge 2 ]] && echo "[WARN]: $1"
+    [[ "$(get_log_level)" -ge 2 ]] && echo "[WARN]: $1" >&2
 }
 
 log_info() {
-    [[ "$(get_log_level)" -ge 3 ]] && echo "[INF]: $1"
+    [[ "$(get_log_level)" -ge 3 ]] && echo "[INF]: $1" >&2
 }
 
 log_debug() {
-    [[ "$(get_log_level)" -ge 4 ]] && echo "[DBG]: $1"
+    [[ "$(get_log_level)" -ge 4 ]] && echo "[DBG]: $1" >&2
 }
 
 check_command() {
@@ -35,6 +40,8 @@ check_command() {
 }
 
 get_os() {
+    log_info "Detecting operating system..."
+    log_debug "OSTYPE: $OSTYPE"
     if [[ "$OSTYPE" == "darwin"* ]]; then
         echo "Darwin"
     elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
