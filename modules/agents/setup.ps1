@@ -4,6 +4,10 @@
 Log-Info "Installing Ollama..."
 winget install -e --id "Ollama.Ollama" -h
 
+# Install Claude
+Log-Info "Installing Claude..."
+winget install -e --id "Anthropic.Claude" -h
+
 # Install GitHub Copilot CLI
 Log-Info "Installing GitHub Copilot CLI..."
 winget install -e --id "GitHub.Copilot" -h
