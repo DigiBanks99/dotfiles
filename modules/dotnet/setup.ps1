@@ -16,3 +16,5 @@ Log-Info "Adding .NET SDK and tools to the PATH..."
 $DOTNET_PATH=$(Join-Path $env:USERPROFILE ".dotnet")
 $DOTNET_TOOL_PATH=$(Join-Path $DOTNET_PATH "tools")
 $env:PATH="$($env:PATH);$DOTNET_PATH;$DOTNET_TOOL_PATH"
+
+. "$env:DOTFILES_HOME/modules/dotnet/run-single-executable.ps1"

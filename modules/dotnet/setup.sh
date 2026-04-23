@@ -28,3 +28,5 @@ for tool in "${GLOBAL_TOOLS[@]}"; do
     echo "[INF]: Installing global .NET tool: $tool..."
     dotnet tool install -g "$tool" 2>/dev/null || dotnet tool update -g "$tool"
 done
+
+bash "$DOTFILES_HOME/modules/dotnet/run-single-executable.sh"
