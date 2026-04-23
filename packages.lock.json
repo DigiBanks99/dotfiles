@@ -4,15 +4,15 @@
     "net8.0": {
       "Microsoft.DotNet.ILCompiler": {
         "type": "Direct",
-        "requested": "[8.0.26, )",
-        "resolved": "8.0.26",
-        "contentHash": "TopkZJbGfDfqNRQatno3/UZh8t/mo4tlglGVtcUAZDEplx/DhmBUSoT7UM7M6W0/ah1Wbe6e46FOLDyHL8K4nQ=="
+        "requested": "[8.0.25, )",
+        "resolved": "8.0.25",
+        "contentHash": "VkChfi7e/mf6peVZaJqgP3taLHKuYGyEc1C0T1YsKJCGMe1pGlzJCp5WMbBkHtZoct7K8ksCLPncmzBA7Mrb+w=="
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
-        "requested": "[8.0.26, )",
-        "resolved": "8.0.26",
-        "contentHash": "o7/yVssM2r9Wyln2s9edBd5ANZXqdSdBI+g7JqXkyJmXrhs2WsJp25K5yPnYrTgdKBCjKB8bg+O2oew4sgzFaA=="
+        "requested": "[8.0.25, )",
+        "resolved": "8.0.25",
+        "contentHash": "sqX4nmBft05ivqKvUT4nxaN8rT3apCLt9SWFkfRrQPwra1zPwFknQAw1lleuMCKOCLvVmOWwrC2iPSm9RiXZUg=="
       },
       "System.CommandLine": {
         "type": "Direct",
@@ -21,20 +21,20 @@
         "contentHash": "1uqED/q2H0kKoLJ4+hI2iPSBSEdTuhfCYADeJrAqERmiGQ2NNacYKRNEQ+gFbU4glgVyK8rxI+ZOe1onEtr/Pg=="
       }
     },
-    "net8.0/win-x64": {
+    "net8.0/linux-x64": {
       "Microsoft.DotNet.ILCompiler": {
         "type": "Direct",
-        "requested": "[8.0.26, )",
-        "resolved": "8.0.26",
-        "contentHash": "TopkZJbGfDfqNRQatno3/UZh8t/mo4tlglGVtcUAZDEplx/DhmBUSoT7UM7M6W0/ah1Wbe6e46FOLDyHL8K4nQ==",
+        "requested": "[8.0.25, )",
+        "resolved": "8.0.25",
+        "contentHash": "VkChfi7e/mf6peVZaJqgP3taLHKuYGyEc1C0T1YsKJCGMe1pGlzJCp5WMbBkHtZoct7K8ksCLPncmzBA7Mrb+w==",
         "dependencies": {
-          "runtime.win-x64.Microsoft.DotNet.ILCompiler": "8.0.26"
+          "runtime.linux-x64.Microsoft.DotNet.ILCompiler": "8.0.25"
         }
       },
-      "runtime.win-x64.Microsoft.DotNet.ILCompiler": {
+      "runtime.linux-x64.Microsoft.DotNet.ILCompiler": {
         "type": "Transitive",
-        "resolved": "8.0.26",
-        "contentHash": "B6uniU3Ts6vv0ykEvHSUmkuIG3uqYPxU/P7Que86d56qbauFm87q/OtFNsQ4mduM1518NjCYC4QCCYGtyEO/9Q=="
+        "resolved": "8.0.25",
+        "contentHash": "QjZ3EEvEkNoQkr8ByKabhYz8pp80zVRx9otEZeg2reVdX57btV1Qn5yUAjCfYsK/RNxWA5zn3rqlG3OiS17Yiw=="
       }
     }
   }
