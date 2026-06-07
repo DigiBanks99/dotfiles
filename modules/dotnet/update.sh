@@ -9,8 +9,7 @@ install_dotnet_sdk() {
         bash -s -- --channel "$version" --install-dir "$HOME/.dotnet"
 }
 
-install_dotnet_sdk "8.0"
-install_dotnet_sdk "9.0"
+install_dotnet_sdk "10.0"
 
 export DOTNET_ROOT="$HOME/.dotnet"
 export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"

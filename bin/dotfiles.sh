@@ -8,7 +8,7 @@ sub_command="${1:-}"
 echo "Running 'dotfiles $sub_command'..."
 case "$sub_command" in
     setup)
-        bash "$DIR/dotfiles-setup.sh"
+        bash "$DIR/dotfiles-setup"
         ;;
     update)
         bash "$DIR/dotfiles-update.sh"

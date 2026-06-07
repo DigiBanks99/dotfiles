@@ -22,6 +22,7 @@ sudo apt-get update -y || { log_warn "apt-get update failed; continuing"; }
 
 echo "[INF]: Installing base packages..."
 sudo apt-get install -y "${PACKAGES[@]}"
+sudo apt-get install -y libicu-dev
 
 # diff-so-fancy is not always in the default Ubuntu apt repos; install via npm if available
 if ! command -v diff-so-fancy &>/dev/null; then
@@ -35,7 +36,7 @@ fi
 
 # Delegate to profile-specific setup if present
 if [[ -n "${DOTFILES_PROFILE_NAME:-}" ]]; then
-    profile_setup="$(dirname "${BASH_SOURCE[0]}")/$DOTFILES_PROFILE_NAME/setup.sh"
+    profile_setup="$(dirname "$0")/$DOTFILES_PROFILE_NAME/setup.sh"
     if [[ -f "$profile_setup" ]]; then
         echo "[INF]: Running base-cli profile setup: $DOTFILES_PROFILE_NAME..."
         bash "$profile_setup"
