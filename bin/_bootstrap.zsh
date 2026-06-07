@@ -8,7 +8,7 @@ export DOTFILES_CYAN="\033[36m"
 export DOTFILES_YELLOW="\033[33m"
 export DOTFILES_RESET="\033[0m"
 
-export DOTFILES_LOG_LEVEL="WARN"
+export DOTFILES_LOG_LEVEL="DEBUG"
 
 source "$DOTFILES_BIN/_functions.zsh"
 

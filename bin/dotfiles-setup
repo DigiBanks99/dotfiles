@@ -9,6 +9,8 @@ source "$DIR/_bootstrap.zsh"
 log_info "Loading profile..."
 resolve_package_manager() {
     log_info "Resolving package manager..."
+    OS="$(uname -s)"
+    log_info "Operating system: $OS"
     if [[ "$OS" == "Darwin" ]]; then
         check_command brew || { log_error "Homebrew is not installed."; exit 1; }
         echo "brew"
