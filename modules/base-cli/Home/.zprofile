@@ -1,20 +1,22 @@
 # Dotfiles environment — loaded at login shell start
-export DOTFILES_HOME="$HOME/.dotfiles"
-export DOTFILES_BIN="$DOTFILES_HOME/bin"
+DOTFILES_HOME="$HOME/.dotfiles"
+DOTFILES_BIN="$DOTFILES_HOME/bin"
+source "$DOTFILES_BIN/_bootstrap.zsh"
 
 # PATH additions: dotfiles bin, pnpm local bin, Rust
 export PNPM_HOME="$HOME/.local/bin"
 export PATH="$DOTFILES_BIN:$PNPM_HOME:$HOME/.cargo/bin:$PATH"
 
-source "$DOTFILES_BIN/functions.sh"
+export BROWSER=/usr/bin/wslview
 
 # Load env snippets from each active module
-if [[ -n "${DOTFILES_PROFILE_NAME:-}" ]]; then
-    modules_file="$DOTFILES_HOME/modules/modules.sh"
-    if [[ -f "$modules_file" ]]; then
-        while IFS= read -r module; do
-            snippet="$DOTFILES_HOME/modules/$module/_zprofile.zsh"
-            [[ -f "$snippet" ]] && source "$snippet"
-        done < <(bash "$modules_file")
+for module in $DOTFILES_MODULES; do
+    log_debug "Processing module '$module' for .zprofile..."
+    EXEC_FILE_NAME="$DOTFILES_HOME/modules/$module/_zprofile.zsh"
+    if [[ -e "$EXEC_FILE_NAME" ]]; then
+        log_debug "Reading $EXEC_FILE_NAME..."
+        source "$EXEC_FILE_NAME"
     fi
-fi
+done
+
+log_debug "Finished loading .zprofile"

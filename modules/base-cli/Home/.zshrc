@@ -1,27 +1,39 @@
-# Dotfiles interactive shell config — loaded for every interactive shell
-# Ensure env vars are set (non-login interactive shells skip .zprofile)
-if [[ -z "${DOTFILES_HOME:-}" ]]; then
-    export DOTFILES_HOME="$HOME/.dotfiles"
-    export DOTFILES_BIN="$DOTFILES_HOME/bin"
-    source "$DOTFILES_BIN/functions.sh"
-fi
+export DOTFILES_HOME="$HOME/.dotfiles"
+export DOTFILES_BIN="$DOTFILES_HOME/bin"
 
-# Load interactive snippets from each active module
-if [[ -n "${DOTFILES_PROFILE_NAME:-}" ]]; then
-    modules_file="$DOTFILES_HOME/modules/modules.sh"
-    if [[ -f "$modules_file" ]]; then
-        while IFS= read -r module; do
-            snippet="$DOTFILES_HOME/modules/$module/_zshrc.zsh"
-            [[ -f "$snippet" ]] && source "$snippet"
-        done < <(bash "$modules_file")
-    fi
-fi
+# Load helper functions early so logging helpers exist
+source "$DOTFILES_BIN/_bootstrap.zsh"
+
+export PATH="$DOTFILES_BIN:$PATH"
+
+autoload -Uz compinit && compinit
+
+# Aliases
+log_debug "Setting up aliases..."
+alias docker='podman'
+alias ls='ls -al --color=always'
+alias dir='ls'
+alias chx="find . --name '*.sh' -exec chmod +x {} \;"
+alias chxz="find . --name '*.zsh' -exec chmod +x {} \;"
+alias reload="source ~/.zshrc"
+
+# Load env snippets from each active module
+for module in $DOTFILES_MODULES; do
+    EXEC_FILE_NAME="$DOTFILES_HOME/modules/$module/_zshrc.zsh"
+    log_debug "Reading $EXEC_FILE_NAME..."
+    [[ -e "$EXEC_FILE_NAME" ]] && source "$EXEC_FILE_NAME"
+done
+
+export BROWSER=/usr/bin/wslview
 
 # VS Code shell integration
 if [[ "${TERM_PROGRAM:-}" == "vscode" ]]; then
+    log_info "Loading VS Code shell integration..."
     vscode_integration="$(code --locate-shell-integration-path zsh 2>/dev/null || true)"
     [[ -n "$vscode_integration" ]] && source "$vscode_integration"
 fi
 
-# Aliases
-alias docker='podman'
+export EDITOR=vim
+
+# Added by get-aspire-cli.sh
+export PATH="$HOME/.aspire/bin:$PATH"
