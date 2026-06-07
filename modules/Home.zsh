@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-source "$DOTFILES_HOME/modules/modules.sh"
+source "$DOTFILES_HOME/modules/modules.zsh"
 
 export MY_MOUDLES=(
     'dotnet'

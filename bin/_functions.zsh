@@ -1,4 +1,16 @@
-#!/usr/bin/env bash
+#!/user/bin/env zsh
+
+brew_bundle() {
+    local path_to_bundle=$1
+    logging_debug "Bundle $DOTFILES_CYAN}$path_to_bundle${DOTFILES_RESET}"
+    brew bundle --file="$path_to_bundle"
+}
+
+module_brew_bundle() {
+    local module="$1"
+    local bundle_file_name="$DOTFILES_HOME/modules/$module/Brewfile"
+    brew_bundle "$bundle_file_name"
+}
 
 # if DOTFILES_LOG_LEVEL is not yet set, default to INFO
 if [[ -z "${DOTFILES_LOG_LEVEL:-}" ]]; then
@@ -11,24 +23,24 @@ get_log_level() {
         2|WARN)  echo 2 ;;
         3|INFO)  echo 3 ;;
         4|DEBUG) echo 4 ;;
-        *)       echo 3 ;;
+        *)       echo 2 ;;
     esac
 }
 
 log_error() {
-    [[ "$(get_log_level)" -ge 1 ]] && echo "[ERR]: $1" >&2
+    [[ "$(get_log_level)" -ge 1 ]] && echo "[${DOTFILES_RED}ERR${DOTFILES_RESET}]: $1" >&2
 }
 
 log_warn() {
-    [[ "$(get_log_level)" -ge 2 ]] && echo "[WARN]: $1" >&2
+    [[ "$(get_log_level)" -ge 2 ]] && echo "[${DOTFILES_YELLOW}WARN${DOTFILES_RESET}]: $1" >&2
 }
 
 log_info() {
-    [[ "$(get_log_level)" -ge 3 ]] && echo "[INF]: $1" >&2
+    [[ "$(get_log_level)" -ge 3 ]] && echo "[${DOTFILES_CYAN}INF${DOTFILES_RESET}]: $1" >&2
 }
 
 log_debug() {
-    [[ "$(get_log_level)" -ge 4 ]] && echo "[DBG]: $1" >&2
+    [[ "$(get_log_level)" -ge 4 ]] && echo "[${DOTFILES_GREEN}DBG${DOTFILES_RESET}]: $1" >&2
 }
 
 check_command() {
@@ -37,23 +49,6 @@ check_command() {
         return 1
     fi
     return 0
-}
-
-get_os() {
-    if [[ -z $OSTYPE ]]; then
-        log_error "OSTYPE is not set. Unable to detect operating system."
-        echo "Nix"
-        return
-    fi
-    log_info "Detecting operating system..."
-    log_debug "OSTYPE: $OSTYPE"
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        echo "Darwin"
-    elif [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
-        echo "windows"
-    else
-        echo "Nix"
-    fi
 }
 
 resolve_profile() {

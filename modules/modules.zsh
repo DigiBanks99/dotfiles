@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-source "$DOTFILES_BIN/functions.sh"
 DIR=$(dirname "$0")
 
 log_debug "Loading base modules..."

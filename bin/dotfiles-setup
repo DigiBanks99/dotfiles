@@ -1,12 +1,10 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
 set -euo pipefail
 
-DOTFILES_LOG_LEVEL="DEBUG"
-
 echo "Setting up dotfiles..."
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$DIR/bootstrap.sh"
+DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$DIR/_bootstrap.zsh"
 
 log_info "Loading profile..."
 resolve_package_manager() {
@@ -22,13 +20,6 @@ resolve_package_manager() {
         get_package_manager
     fi
 }
-
-log_debug "Profile: ${DOTFILES_PROFILE_NAME:-}"
-if [[ -z "${DOTFILES_PROFILE_NAME:-}" ]]; then
-    log_debug "Profile not set. Resolving..."
-    resolve_profile
-fi
-log_debug "Profile: $DOTFILES_PROFILE_NAME"
 
 package_manager="$(resolve_package_manager)"
 log_debug "Package manager: $package_manager"
@@ -57,24 +48,10 @@ if [[ "$package_manager" == "apt-get" ]]; then
     repair_apt_microsoft_vscode_repo_conflict
 fi
 
-log_info "Reading profile modules..."
-modules_folder="$DOTFILES_HOME/modules"
-modules_file="$modules_folder/modules.sh"
-
-if [[ ! -f "$modules_file" ]]; then
-    log_error "Modules file not found: $modules_file"
-    exit 1
-fi
-
-mapfile -t modules < <(bash "$modules_file")
-log_debug "Modules: ${modules[*]}"
-
-for module in "${modules[@]}"; do
-    module_file="$modules_folder/$module/setup.sh"
-    if [[ -f "$module_file" ]]; then
-        log_info "Installing module: $module..."
-        bash -c "source \"$DOTFILES_BIN/functions.sh\" && source \"$module_file\""
-    else
-        log_warn "Skipping $module — no setup.sh found."
-    fi
+log_info "Reading profile modules ${DOTFILES_MODULES[*]}..."
+for module in $DOTFILES_MODULES; do
+    module_file="$DOTFILES_HOME/modules/$module/setup.sh"
+    log_debug "setting up $module_file..."
+    [[ -f "$module_file" ]] && source "$module_file"
+    log_info "Finished setting up $module module."
 done
