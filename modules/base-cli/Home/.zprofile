@@ -4,8 +4,8 @@ DOTFILES_BIN="$DOTFILES_HOME/bin"
 source "$DOTFILES_BIN/_bootstrap.zsh"
 
 # PATH additions: dotfiles bin, pnpm local bin, Rust
-export PNPM_HOME="$HOME/.local/bin"
-export PATH="$DOTFILES_BIN:$PNPM_HOME:$HOME/.cargo/bin:$PATH"
+export PNPM_HOME="$HOME/.local"
+export PATH="$DOTFILES_BIN:$PNPM_HOME/bin:$HOME/.cargo/bin:$PATH"
 
 export BROWSER=/usr/bin/wslview
 
