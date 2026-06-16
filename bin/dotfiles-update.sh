@@ -3,7 +3,7 @@
 set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$DIR/bootstrap.sh"
+source "$DIR/_bootstrap.zsh"
 
 log_debug "Profile: ${DOTFILES_PROFILE_NAME:-}"
 if [[ -z "${DOTFILES_PROFILE_NAME:-}" ]]; then
