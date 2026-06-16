@@ -7,7 +7,7 @@ DIR="${0:A:h}"
 sub_command="${1:-}"
 case "$sub_command" in
     setup)
-        bash "$DIR/dotfiles-setup.sh"
+        bash "$DIR/dotfiles-setup"
         ;;
     update)
         bash "$DIR/dotfiles-update.sh"

@@ -7,6 +7,8 @@ export MY_MOUDLES=(
     'oh-my-posh'
     'mise'
     'agents'
+    'vscode'
+    'podman'
 )
 
 export DOTFILES_MODULES=("${DOTFILES_MODULES[@]}" "${MY_MOUDLES[@]}")

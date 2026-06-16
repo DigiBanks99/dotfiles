@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-. $DOTFILES_BIN/bootstrap.sh
+. $DOTFILES_BIN/_bootstrap.zsh
 
 brew update
 brew upgrade

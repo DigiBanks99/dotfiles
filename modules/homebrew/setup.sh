@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-. $DOTFILES_BIN/bootstrap.sh
-
-log_debug "$DOTFILES_BIN/is-executable brew: $($DOTFILES_BIN/is-executable brew && echo "true" || echo "false")"
+. $DOTFILES_BIN/_bootstrap.zsh
 
 #bash check if is-executable exits with 0
 if $DOTFILES_BIN/is-executable brew; then
