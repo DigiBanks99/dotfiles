@@ -18,7 +18,7 @@ alias chxz="find . --name '*.zsh' -exec chmod +x {} \;"
 alias reload="source ~/.zshrc"
 
 # Load env snippets from each active module
-for module in $DOTFILES_MODULES; do
+for module in "${DOTFILES_MODULES[@]}"; do
     EXEC_FILE_NAME="$DOTFILES_HOME/modules/$module/_zshrc.zsh"
     log_debug "Reading $EXEC_FILE_NAME..."
     [[ -e "$EXEC_FILE_NAME" ]] && source "$EXEC_FILE_NAME"

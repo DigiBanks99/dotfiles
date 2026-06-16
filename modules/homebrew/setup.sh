@@ -3,7 +3,10 @@
 . $DOTFILES_BIN/bootstrap.sh
 
 log_debug "$DOTFILES_BIN/is-executable brew: $($DOTFILES_BIN/is-executable brew && echo "true" || echo "false")"
-if [[ `$DOTFILES_BIN/is-executable brew` == "0" ]]; then
+
+#bash check if is-executable exits with 0
+if $DOTFILES_BIN/is-executable brew; then
+    log_info "Updating Homebrew..."
     brew update
     brew upgrade
 else

@@ -9,4 +9,4 @@ export MY_MOUDLES=(
     'agents'
 )
 
-export DOTFILES_MODULES=("${DOTFILES_MODULES[@]}" $MY_MOUDLES)
+export DOTFILES_MODULES=("${DOTFILES_MODULES[@]}" "${MY_MOUDLES[@]}")
