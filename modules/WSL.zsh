@@ -1,13 +1,14 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 
-source "$DOTFILES_HOME/modules/modules.sh"
+source "$DOTFILES_HOME/modules/modules.zsh"
 
 export MY_MOUDLES=(
+    'zsh'
     'dotnet'
-    'oh-my-posh'
     'mise'
     'agents'
-    'zsh'
+    'podman'
+    'oh-my-posh'
 )
 
 export DOTFILES_MODULES=("${DOTFILES_MODULES[@]}" "${MY_MOUDLES[@]}")
