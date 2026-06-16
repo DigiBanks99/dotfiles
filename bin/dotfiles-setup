@@ -50,6 +50,14 @@ if [[ "$package_manager" == "apt-get" ]]; then
     repair_apt_microsoft_vscode_repo_conflict
 fi
 
+# check if EMAIL_ADDRESS is set and prompt the user to set it if not
+if [[ -z "${EMAIL_ADDRESS:-}" ]]; then
+    log_info "EMAIL_ADDRESS environment variable is not set."
+    read -rp "Please enter your email address for Git configuration: " EMAIL_ADDRESS
+    export EMAIL_ADDRESS
+    log_info "EMAIL_ADDRESS set to: $EMAIL_ADDRESS"
+fi
+
 log_info "Reading profile modules ${DOTFILES_MODULES[*]}..."
 for module in "${DOTFILES_MODULES[@]}"; do
     log_debug "Finding setup script for module: $module..."
