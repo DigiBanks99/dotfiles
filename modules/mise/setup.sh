@@ -2,18 +2,22 @@
 
 set -euo pipefail
 
-echo "[INF]: Installing mise..."
-curl https://mise.run | sh
+module_brew_bundle mise
 
-export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:$PATH"
+export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"
 
-echo "[INF]: Installing Node LTS via mise..."
+log_info "Installing Node LTS via mise..."
 mise use --global node@lts
 
-echo "[INF]: Enabling pnpm via corepack..."
+# get shell name
+SHELL_NAME="$(basename "$SHELL")"
+log_debug "Current shell: $SHELL_NAME"
+eval "$(mise activate $SHELL_NAME)"
+
+log_info "Enabling pnpm via corepack..."
 corepack enable pnpm
 
-export PNPM_HOME="$HOME/.local/bin"
+export PNPM_HOME="$HOME/.local"
 
-echo "[INF]: Installing global npm packages..."
+log_info "Installing global npm packages..."
 pnpm add -g rimraf prettier

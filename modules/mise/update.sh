@@ -11,5 +11,5 @@ echo "[INF]: Ensuring Node LTS is current..."
 mise use --global node@lts
 
 echo "[INF]: Updating global npm packages..."
-export PNPM_HOME="$HOME/.local/bin"
+export PNPM_HOME="$HOME/.local"
 pnpm update -g rimraf prettier
