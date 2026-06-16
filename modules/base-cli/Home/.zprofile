@@ -10,7 +10,7 @@ export PATH="$DOTFILES_BIN:$PNPM_HOME:$HOME/.cargo/bin:$PATH"
 export BROWSER=/usr/bin/wslview
 
 # Load env snippets from each active module
-for module in $DOTFILES_MODULES; do
+for module in "${DOTFILES_MODULES[@]}"; do
     log_debug "Processing module '$module' for .zprofile..."
     EXEC_FILE_NAME="$DOTFILES_HOME/modules/$module/_zprofile.zsh"
     if [[ -e "$EXEC_FILE_NAME" ]]; then

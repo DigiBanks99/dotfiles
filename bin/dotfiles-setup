@@ -51,9 +51,18 @@ if [[ "$package_manager" == "apt-get" ]]; then
 fi
 
 log_info "Reading profile modules ${DOTFILES_MODULES[*]}..."
-for module in $DOTFILES_MODULES; do
+for module in "${DOTFILES_MODULES[@]}"; do
+    log_debug "Finding setup script for module: $module..."
     module_file="$DOTFILES_HOME/modules/$module/setup.sh"
-    log_debug "setting up $module_file..."
-    [[ -f "$module_file" ]] && source "$module_file"
-    log_info "Finished setting up $module module."
+    log_debug "Setting up $module_file..."
+    if [[ -x "$module_file" ]]; then
+        source "$module_file"
+        log_info "Finished setting up $module module."
+    elif [[ -e "$module_file" ]]; then
+        log_error "Setup script for $module module is not executable: $module_file"
+    else
+        log_error "Setup script for $module module not found: $module_file"
+    fi
 done
+
+exit 2
