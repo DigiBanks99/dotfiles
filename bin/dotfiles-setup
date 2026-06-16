@@ -61,7 +61,7 @@ for module in "${DOTFILES_MODULES[@]}"; do
     elif [[ -e "$module_file" ]]; then
         log_error "Setup script for $module module is not executable: $module_file"
     else
-        log_error "Setup script for $module module not found: $module_file"
+        module_brew_bundle $module
     fi
 done
 

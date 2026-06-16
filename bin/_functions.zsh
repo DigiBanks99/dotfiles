@@ -2,7 +2,7 @@
 
 brew_bundle() {
     local path_to_bundle=$1
-    logging_debug "Bundle $DOTFILES_CYAN}$path_to_bundle${DOTFILES_RESET}"
+    log_debug "Bundle $DOTFILES_CYAN}$path_to_bundle${DOTFILES_RESET}"
     brew bundle --file="$path_to_bundle"
 }
 
