@@ -1,0 +1,35 @@
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore_global
+	eol = lf
+[user]
+	name = Wilco Boshoff
+	email = EMAILADDRESS
+[alias]
+	st = status --short
+	ci = commit
+	co = checkout
+	cob = checkout -b
+	brl = branch --list
+	brd = branch -d
+	brdd = branch -D
+	pu = push -u origin
+	poof = push --force
+	amend = commit --amend
+	amendne = commit --amend --no-edit
+	upmain = fetch origin main:main
+	rpo = remote prune origin
+	br = branch
+	pop = stash pop
+	lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)' --all
+	lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+	lg = lg2
+	lg3 = log --graph --all --decorate --oneline
+[text]
+	eol = lf
+[init]
+	defaultBranch = main
+[push]
+	autoSetupRemote = true
+[pull]
+	rebase = true

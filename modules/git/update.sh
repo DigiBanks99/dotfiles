@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
-echo "[INF]: Updating git..."
-	sudo apt-get update -y || { log_warn "apt-get update failed; continuing"; }
-sudo apt-get install -y --only-upgrade git
+MODULE_DIR="$DOTFILES_HOME/modules/git"
+
+sed "s/EMAILADDRESS/$EMAIL_ADDRESS/g" "$MODULE_DIR/.config/.gitconfig.template" > "$MODULE_DIR/.config/.gitconfig"
+ln -sf "$MODULE_DIR/.config/.gitconfig" "$HOME/.gitconfig"
