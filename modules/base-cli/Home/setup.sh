@@ -12,7 +12,7 @@ link_file() {
         rm -f "$dest"
     fi
     ln -sf "$src" "$dest"
-    echo "[INF]: Linked $dest -> $src"
+    log_info "Linked $dest -> $src"
 }
 
 link_file "$MODULE_CONFIG/.zshrc"   "$HOME/.zshrc"
@@ -21,8 +21,8 @@ link_file "$MODULE_CONFIG/.zprofile" "$HOME/.zprofile"
 # Set zsh as the default login shell
 ZSH_PATH="$(which zsh)"
 if ! grep -qxF "$ZSH_PATH" /etc/shells; then
-    echo "[INF]: Adding $ZSH_PATH to /etc/shells..."
+    log_info "Adding $ZSH_PATH to /etc/shells..."
     echo "$ZSH_PATH" | sudo tee -a /etc/shells > /dev/null
 fi
-echo "[INF]: Setting default shell to zsh..."
+log_info "Setting default shell to zsh..."
 chsh -s "$ZSH_PATH"
