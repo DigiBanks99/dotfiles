@@ -53,9 +53,16 @@ fi
 # check if EMAIL_ADDRESS is set and prompt the user to set it if not
 if [[ -z "${EMAIL_ADDRESS:-}" ]]; then
     log_info "EMAIL_ADDRESS environment variable is not set."
-    read -rp "Please enter your email address for Git configuration: " EMAIL_ADDRESS
-    export EMAIL_ADDRESS
-    log_info "EMAIL_ADDRESS set to: $EMAIL_ADDRESS"
+    #first atempt to read from git config
+    EMAIL_ADDRESS="$(git config --global user.email || true)"
+    if [[ -n "$EMAIL_ADDRESS" ]]; then
+        log_info "Found email address in git config: $EMAIL_ADDRESS"
+    else
+        log_debug "No email address found in git config. Prompting user for input..."
+        read -rp "Please enter your email address for Git configuration: " EMAIL_ADDRESS
+        export EMAIL_ADDRESS
+        log_info "EMAIL_ADDRESS set to: $EMAIL_ADDRESS"
+    fi
 fi
 
 log_info "Reading profile modules ${DOTFILES_MODULES[*]}..."
