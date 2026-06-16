@@ -13,8 +13,16 @@ else
     # temporarily setup the path to allow the setup to continue
     if [[ "$(uname -p)" == "arm" ]]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
+
+        # include bash as initial shell setup
+        echo 'eval "$(/home/homebrew/bin/brew shellenv bash)"' >> ~/.bashrc
+        eval "$(/home/homebrew/bin/brew shellenv bash)"
     else
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
         export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+
+        # include bash as initial shell setup
+        echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"' >> ~/.bashrc
+        eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv bash)"
     fi
 fi
