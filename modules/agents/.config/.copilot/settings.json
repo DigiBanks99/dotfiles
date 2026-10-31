@@ -41,8 +41,7 @@
   "model": "claude-opus-4.6",
   "effortLevel": "high",
   "disabledSkills": [
-    "customize-cloud-agent",
-    "microsoft-foundry"
+    "customize-cloud-agent"
   ],
   "disabledMcpServers": [
     "github-mcp-server"
