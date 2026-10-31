@@ -1,5 +1,7 @@
 . $env:DOTFILES_HOME/bin/bootstrap.ps1
 
+Log-Info "Installing core utils"
+winget install -e --id "Microsoft.Coreutils" -h
 Log-Info "Installing bat"
 winget install -e --id "sharkdp.bat" -h
 Log-Info "Installing Windows Terminal"
