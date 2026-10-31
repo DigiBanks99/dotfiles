@@ -1,4 +1,4 @@
-. $env:DOTFILES_HOME/bin/bootstrap.ps1
+. $DOTFILES_BIN\bootstrap.ps1
 
 Log-Info "Installing bat"
 winget update -e --id "sharkdp.bat" -h
@@ -11,7 +11,7 @@ winget update -e --id "JanDeDobbeleer.OhMyPosh" -h
 
 Log-Info "Configuring Windows Terminal"
 $wtSettingsPath = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-$wtSettingsTarget = Join-Path $env:DOTFILES_HOME "modules/base-cli/.config/settings.json"
+$wtSettingsTarget = Join-Path $env:DOTFILES_HOME "modules\base-cli\.config\settings.json"
 
 $existingSettings = Get-Item -Path $wtSettingsPath -Force -ErrorAction SilentlyContinue
 if ($existingSettings) {
@@ -26,3 +26,4 @@ if ($existingSettings) {
 }
 
 Log-Info "Creating symbolic link for Windows Terminal settings..."
+New-Item -ItemType SymbolicLink -Path $wtSettingsPath -Target $wtSettingsTarget | Out-Null
