@@ -38,3 +38,6 @@ modules/agents/.config/.agents/skills/**/*.pyc
 modules/agents/.config/.copilot/session-store.db*
 modules/agents/.config/.copilot/vscode.session.metadata.cache.json
 modules/agents/.config/.copilot/permissions-config.json
+# Claude desktop app state written into ~/.claude/skills (symlinked to the skills directory)
+modules/agents/.config/.agents/skills/synced/
+modules/agents/.config/.agents/skills/.trash/

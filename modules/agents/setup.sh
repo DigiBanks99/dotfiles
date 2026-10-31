@@ -23,6 +23,24 @@ if [ -e "$HOME/.agents" ] || [ -L "$HOME/.agents" ]; then
 fi
 ln -sf "$MODULE_CONFIG/.agents" "$HOME/.agents"
 
+# Symlink ~/.claude/skills to the versioned skills directory
+log_info "Linking ~/.claude/skills..."
+CLAUDE_SKILLS="$HOME/.claude/skills"
+SKILLS_TARGET="$MODULE_CONFIG/.agents/skills"
+mkdir -p "$HOME/.claude"
+if [ -e "$CLAUDE_SKILLS" ] && [ ! -L "$CLAUDE_SKILLS" ]; then
+    # A real directory: move it aside rather than delete it, then carry over app-managed state
+    SKILLS_BACKUP="$CLAUDE_SKILLS.bak-$(date +%Y%m%d%H%M%S)"
+    mv "$CLAUDE_SKILLS" "$SKILLS_BACKUP"
+    for keep in synced .trash; do
+        if [ -e "$SKILLS_BACKUP/$keep" ]; then
+            mv "$SKILLS_BACKUP/$keep" "$SKILLS_TARGET/$keep"
+        fi
+    done
+    log_info "Previous ~/.claude/skills kept at $SKILLS_BACKUP"
+fi
+ln -sfn "$SKILLS_TARGET" "$CLAUDE_SKILLS"
+
 # Symlink .copilot
 log_info "Linking ~/.copilot..."
 if [ -e "$HOME/.copilot" ] || [ -L "$HOME/.copilot" ]; then
