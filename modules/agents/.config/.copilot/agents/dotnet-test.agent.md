@@ -97,4 +97,4 @@ Use as many subagents as needed to add tests. Preferably use a sub-agent per sli
 
 ## Skills
 
-You must use the dotnet-testing-preferences skill while writing tests
+You must use the dotnet-tests skill while writing tests

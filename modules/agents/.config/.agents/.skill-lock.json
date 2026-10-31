@@ -1,15 +1,6 @@
 {
   "version": 3,
   "skills": {
-    "microsoft-foundry": {
-      "source": "microsoft/azure-skills",
-      "sourceType": "github",
-      "sourceUrl": "https://github.com/microsoft/azure-skills.git",
-      "skillPath": ".github/plugins/azure-skills/skills/microsoft-foundry/SKILL.md",
-      "skillFolderHash": "15b425217b643229a34baf34eb1def65bb637308",
-      "installedAt": "2026-03-17T03:41:05.232Z",
-      "updatedAt": "2026-10-30T11:08:45.665Z"
-    },
     "skill-creator": {
       "source": "anthropics/skills",
       "sourceType": "github",
