@@ -1,0 +1,1 @@
+Always use the /commit-changes skill for committing changes

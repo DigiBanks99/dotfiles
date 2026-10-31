@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "hooks": {
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "bash \u0027C:\\Users\\wilco.boshoff\\.aspire\\hooks\\track-telemetry.sh\u0027",
+        "powershell": "pwsh -NoProfile -ExecutionPolicy Bypass -File \u0027C:\\Users\\wilco.boshoff\\.aspire\\hooks\\track-telemetry.ps1\u0027",
+        "timeoutSec": 30
+      }
+    ]
+  }
+}
