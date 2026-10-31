@@ -41,6 +41,37 @@ function Set-DirSymlink {
 Log-Info "Linking ~/.agents..."
 Set-DirSymlink -LinkPath (Join-Path $env:USERPROFILE ".agents") -Target (Join-Path $moduleConfig ".agents")
 
+# Symlink ~/.claude/skills to the versioned skills directory
+Log-Info "Linking ~/.claude/skills..."
+$claudeDir = Join-Path $env:USERPROFILE ".claude"
+$claudeSkills = Join-Path $claudeDir "skills"
+$skillsTarget = [System.IO.Path]::GetFullPath((Join-Path $moduleConfig ".agents/skills"))
+New-Item -ItemType Directory -Path $claudeDir -Force | Out-Null
+$existingSkills = Get-Item -Path $claudeSkills -ErrorAction SilentlyContinue -Force
+$skillsBackup = $null
+if ($existingSkills -and $existingSkills.LinkType -ne 'SymbolicLink') {
+    # A real directory: move it aside rather than delete it, then carry over app-managed state
+    $skillsBackup = "$claudeSkills.bak-$(Get-Date -Format yyyyMMddHHmmss)"
+    try {
+        Move-Item -Path $claudeSkills -Destination $skillsBackup -ErrorAction Stop
+    } catch {
+        Log-Warn "Cannot move $claudeSkills aside — it may be in use. Close Claude and re-run setup."
+        $skillsBackup = $null
+    }
+    if ($skillsBackup) {
+        foreach ($keep in @("synced", ".trash")) {
+            $source = Join-Path $skillsBackup $keep
+            if (Test-Path $source) {
+                Move-Item -Path $source -Destination (Join-Path $skillsTarget $keep)
+            }
+        }
+        Log-Info "Previous ~/.claude/skills kept at $skillsBackup"
+    }
+}
+if (-not (Test-Path $claudeSkills) -or $skillsBackup -or $existingSkills.LinkType -eq 'SymbolicLink') {
+    Set-DirSymlink -LinkPath $claudeSkills -Target $skillsTarget
+}
+
 # Symlink .copilot
 Log-Info "Linking ~/.copilot..."
 Set-DirSymlink -LinkPath (Join-Path $env:USERPROFILE ".copilot") -Target (Join-Path $moduleConfig ".copilot")
