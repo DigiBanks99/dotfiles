@@ -49,5 +49,26 @@
     "warp",
     "zed",
     "claude-code"
-  ]
+  ],
+  "localForks": {
+    "note": "Local forks of third-party skills. Do not overwrite them when updating skills.",
+    "skills": {
+      "to-requirement": {
+        "forkedFrom": "mattpocock/skills",
+        "upstreamSkill": "to-spec"
+      },
+      "to-specs": {
+        "forkedFrom": "mattpocock/skills",
+        "upstreamSkill": "to-tickets"
+      },
+      "work-on-spec": {
+        "forkedFrom": "mattpocock/skills",
+        "upstreamSkill": "implement"
+      },
+      "wayfinder": {
+        "forkedFrom": "mattpocock/skills",
+        "upstreamSkill": "wayfinder"
+      }
+    }
+  }
 }
