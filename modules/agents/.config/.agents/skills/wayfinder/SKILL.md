@@ -4,9 +4,12 @@ description: Plan a huge chunk of work — more than one agent session can hold 
 disable-model-invocation: true
 metadata:
   - author: Matt Pocock
+  - local-fork: Adds Requirement linkage for the Requirement -> Spec -> Task model. Do not overwrite from upstream.
 ---
 
 A loose idea has arrived — too big for one agent session, and wrapped in fog: the way from here to the **destination** isn't visible yet. Wayfinding is about finding that way, not charging at the destination. This skill charts the way as a **shared map** on the repo's issue tracker, then works its **decision tickets** — questions whose resolution is a decision, not slices of a build to execute — one at a time until the route is clear.
+
+When the effort starts from a **Requirement** (see `/to-requirement`), the destination is that Requirement broken into Specs: link the Requirement from the map's Destination, and have the map's Notes point `/to-specs` at the closed map. `/to-specs` links the map and the Requirement from each Spec it creates. The `wayfinder:*` labels are separate from the repository's ready signal (`ready-for-agent` by default): never put the ready signal on a map or a decision ticket.
 
 The destination varies per effort, and naming it is the first act of charting — it shapes every ticket. It might be a spec to hand off and iterate on, a decision to lock before planning starts, or a change made in place like a data-structure migration. The map is domain-agnostic — engineering work, course content, whatever fits the shape.
 
