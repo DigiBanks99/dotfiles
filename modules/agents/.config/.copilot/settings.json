@@ -3,7 +3,7 @@
   "theme": "auto",
   "showReasoning": false,
   "skillDirectories": [
-    "C:/Users/wilco.boshoff/.agents/skills"
+    "~/.agents/skills"
   ],
   "allowedUrls": [
     "https://github.com",

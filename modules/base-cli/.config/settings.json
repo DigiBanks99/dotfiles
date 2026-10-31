@@ -93,14 +93,14 @@
                 "hidden": false,
                 "name": "PowerShell",
                 "source": "Windows.Terminal.PowershellCore",
-                "startingDirectory": "C:\\Users\\wilco.boshoff\\source"
+                "startingDirectory": "%USERPROFILE%\\source"
             },
             {
-                "commandline": "C:\\Users\\DigiHome\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe",
+                "commandline": "%LOCALAPPDATA%\\Microsoft\\WindowsApps\\Microsoft.PowerShell_8wekyb3d8bbwe\\pwsh.exe",
                 "guid": "{6cc8efaf-290a-581c-bdc6-b70fae4b96ef}",
                 "icon": "ms-appx:///ProfileIcons/pwsh.png",
                 "name": "livestock-tracker/ClientApp",
-                "startingDirectory": "C:\\Users\\DigiHome\\source\\repos\\livestock-tracker\\src\\livestock-tracker\\ClientApp",
+                "startingDirectory": "%USERPROFILE%\\source\\repos\\livestock-tracker\\src\\livestock-tracker\\ClientApp",
                 "tabTitle": "ClientApp"
             },
             {
