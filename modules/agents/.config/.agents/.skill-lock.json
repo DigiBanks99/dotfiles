@@ -6,10 +6,57 @@
       "sourceType": "github",
       "sourceUrl": "https://github.com/microsoft/azure-skills.git",
       "skillPath": ".github/plugins/azure-skills/skills/microsoft-foundry/SKILL.md",
-      "skillFolderHash": "a7cef45bde792dc76cea4918cfc0262374a60eeb",
+      "skillFolderHash": "15b425217b643229a34baf34eb1def65bb637308",
       "installedAt": "2026-03-17T03:41:05.232Z",
-      "updatedAt": "2026-04-18T13:44:06.869Z"
+      "updatedAt": "2026-10-30T11:08:45.665Z"
+    },
+    "skill-creator": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/anthropics/skills.git",
+      "skillPath": "skills/skill-creator/SKILL.md",
+      "skillFolderHash": "3cf9a8db32597ba3e24b584a3d696f4e11c7d7b6",
+      "pluginName": "example-skills",
+      "installedAt": "2026-10-24T08:45:54.597Z",
+      "updatedAt": "2026-10-24T08:45:54.597Z"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "76a98a285cb0434f3d39e1a873823556330e398b",
+      "installedAt": "2026-10-24T08:45:59.082Z",
+      "updatedAt": "2026-10-24T08:45:59.082Z"
+    },
+    "agent-framework-builder-dotnet": {
+      "source": "microsoft/agent-framework",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/microsoft/agent-framework.git",
+      "skillPath": "skills/agent-framework-builder-dotnet/SKILL.md",
+      "skillFolderHash": "b08af72a999f85794836be2094b8a885090daa08",
+      "installedAt": "2026-10-24T09:07:17.887Z",
+      "updatedAt": "2026-10-24T09:07:17.887Z"
     }
   },
-  "dismissed": {}
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "cline",
+    "codex",
+    "cursor",
+    "droid",
+    "fx",
+    "gemini-cli",
+    "github-copilot",
+    "kilo",
+    "kimi-code-cli",
+    "opencode",
+    "pi",
+    "warp",
+    "zed",
+    "claude-code"
+  ]
 }
