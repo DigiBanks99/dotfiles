@@ -26,7 +26,6 @@ import webbrowser
 from functools import partial
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
-from typing import Optional
 
 # Files to exclude from output listings
 METADATA_FILES = {"transcript.md", "user_notes.md", "metrics.json"}
@@ -83,7 +82,7 @@ def _find_runs_recursive(root: Path, current: Path, runs: list[dict]) -> None:
             _find_runs_recursive(root, child, runs)
 
 
-def build_run(root: Path, run_dir: Path) -> Optional[dict]:
+def build_run(root: Path, run_dir: Path) -> dict | None:
     """Build a run dict with prompt, outputs, and grading data."""
     prompt = ""
     eval_id = None
@@ -251,8 +250,8 @@ def load_previous_iteration(workspace: Path) -> dict[str, dict]:
 def generate_html(
     runs: list[dict],
     skill_name: str,
-    previous: Optional[dict[str, dict]] = None,
-    benchmark: Optional[dict] = None,
+    previous: dict[str, dict] | None = None,
+    benchmark: dict | None = None,
 ) -> str:
     """Generate the complete standalone HTML page with embedded data."""
     template_path = Path(__file__).parent / "viewer.html"
@@ -319,7 +318,7 @@ class ReviewHandler(BaseHTTPRequestHandler):
         skill_name: str,
         feedback_path: Path,
         previous: dict[str, dict],
-        benchmark_path: Optional[Path],
+        benchmark_path: Path | None,
         *args,
         **kwargs,
     ):
