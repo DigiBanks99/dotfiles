@@ -22,6 +22,9 @@ $functions=$(Join-Path "$env:DOTFILES_BIN" "functions.ps1")
 . $functions
 Log-Debug "DOTFILES_HOME: $env:DOTFILES_HOME"
 
+$CODE_DEST="$HOME\source"
+$SOURCE="$HOME\source"
+
 # Retrieve OS info
 $OS = Get-Os
 Log-Debug "OS: $OS"

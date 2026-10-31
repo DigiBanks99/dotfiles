@@ -3,6 +3,9 @@
 export DOTFILES_HOME=~/.dotfiles
 export DOTFILES_BIN="$DOTFILES_HOME/bin"
 
+export CODE_DEST="$HOME/source"
+export SOURCE="$HOME/source"
+
 source "$DOTFILES_BIN/functions.sh"
 
 log_debug "Profile: ${DOTFILES_PROFILE_NAME:-}"
