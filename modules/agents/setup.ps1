@@ -45,11 +45,13 @@ Set-DirSymlink -LinkPath (Join-Path $env:USERPROFILE ".agents") -Target (Join-Pa
 Log-Info "Linking ~/.claude/skills..."
 $claudeDir = Join-Path $env:USERPROFILE ".claude"
 $claudeSkills = Join-Path $claudeDir "skills"
-$skillsTarget = [System.IO.Path]::GetFullPath((Join-Path $moduleConfig ".agents/skills"))
+$skillsTarget = if ($moduleConfig) { [System.IO.Path]::GetFullPath((Join-Path $moduleConfig ".agents/skills")) } else { $null }
+$skillsTargetReady = $skillsTarget -and (Test-Path -LiteralPath $skillsTarget -PathType Container)
+if (-not $skillsTargetReady) { Log-Warn "Skills directory not found ($skillsTarget) — is DOTFILES_HOME set? Skipping ~/.claude/skills link." }
 New-Item -ItemType Directory -Path $claudeDir -Force | Out-Null
 $existingSkills = Get-Item -Path $claudeSkills -ErrorAction SilentlyContinue -Force
 $skillsBackup = $null
-if ($existingSkills -and $existingSkills.LinkType -ne 'SymbolicLink') {
+if ($skillsTargetReady -and $existingSkills -and $existingSkills.LinkType -ne 'SymbolicLink') {
     # A real directory: move it aside rather than delete it, then carry over app-managed state
     $skillsBackup = "$claudeSkills.bak-$(Get-Date -Format yyyyMMddHHmmss)"
     try {
@@ -68,7 +70,7 @@ if ($existingSkills -and $existingSkills.LinkType -ne 'SymbolicLink') {
         Log-Info "Previous ~/.claude/skills kept at $skillsBackup"
     }
 }
-if (-not (Test-Path $claudeSkills) -or $skillsBackup -or $existingSkills.LinkType -eq 'SymbolicLink') {
+if ($skillsTargetReady -and (-not (Test-Path $claudeSkills) -or $skillsBackup -or $existingSkills.LinkType -eq 'SymbolicLink')) {
     Set-DirSymlink -LinkPath $claudeSkills -Target $skillsTarget
 }
 

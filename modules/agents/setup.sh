@@ -13,7 +13,7 @@ elif command -v apt-get &>/dev/null; then
 elif command -v snap &>/dev/null; then
     sudo snap install gh && gh extension install github/gh-copilot 2>/dev/null || true
 else
-    log_warn "No supported package manager found for GitHub Copilot CLI. Install manually."
+        log_warn "No supported package manager found for GitHub Copilot CLI. Install manually."
 fi
 
 # Symlink .agents
@@ -28,18 +28,22 @@ log_info "Linking ~/.claude/skills..."
 CLAUDE_SKILLS="$HOME/.claude/skills"
 SKILLS_TARGET="$MODULE_CONFIG/.agents/skills"
 mkdir -p "$HOME/.claude"
-if [ -e "$CLAUDE_SKILLS" ] && [ ! -L "$CLAUDE_SKILLS" ]; then
-    # A real directory: move it aside rather than delete it, then carry over app-managed state
-    SKILLS_BACKUP="$CLAUDE_SKILLS.bak-$(date +%Y%m%d%H%M%S)"
-    mv "$CLAUDE_SKILLS" "$SKILLS_BACKUP"
-    for keep in synced .trash; do
-        if [ -e "$SKILLS_BACKUP/$keep" ]; then
-            mv "$SKILLS_BACKUP/$keep" "$SKILLS_TARGET/$keep"
-        fi
-    done
-    log_info "Previous ~/.claude/skills kept at $SKILLS_BACKUP"
+if [ ! -d "$SKILLS_TARGET" ]; then
+    log_warn "Skills directory not found ($SKILLS_TARGET). Skipping ~/.claude/skills link."
+else
+    if [ -e "$CLAUDE_SKILLS" ] && [ ! -L "$CLAUDE_SKILLS" ]; then
+        # A real directory: move it aside rather than delete it, then carry over app-managed state
+        SKILLS_BACKUP="$CLAUDE_SKILLS.bak-$(date +%Y%m%d%H%M%S)"
+        mv "$CLAUDE_SKILLS" "$SKILLS_BACKUP"
+        for keep in synced .trash; do
+            if [ -e "$SKILLS_BACKUP/$keep" ]; then
+                mv "$SKILLS_BACKUP/$keep" "$SKILLS_TARGET/$keep"
+            fi
+        done
+        log_info "Previous ~/.claude/skills kept at $SKILLS_BACKUP"
+    fi
+    ln -sfn "$SKILLS_TARGET" "$CLAUDE_SKILLS"
 fi
-ln -sfn "$SKILLS_TARGET" "$CLAUDE_SKILLS"
 
 # Symlink .copilot
 log_info "Linking ~/.copilot..."
