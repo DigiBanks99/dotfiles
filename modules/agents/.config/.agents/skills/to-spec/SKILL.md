@@ -8,7 +8,7 @@ metadata:
 
 This skill takes the current conversation context and codebase understanding and produces a spec. Do NOT interview the user — just synthesize what you already know.
 
-The issue tracker and triage label vocabulary should have been provided to you — run `/setup-matt-pocock-skills` if not.
+The issue tracker is the repository's own (GitHub, via `gh`). Use its `ready-for-agent` label for tickets that are ready to be picked up.
 
 ## Process
 
