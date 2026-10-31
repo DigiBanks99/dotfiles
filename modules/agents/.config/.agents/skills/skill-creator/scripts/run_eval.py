@@ -20,14 +20,14 @@ from scripts.utils import parse_skill_md
 
 
 def find_project_root() -> Path:
-    """Find the project root by walking up from cwd looking for .agents/.
+    """Find the project root by walking up from cwd looking for .claude/.
 
-    Mimics how Copilot CLI discovers its project root, so the command file
-    we create ends up where copilot will look for it.
+    Mimics how Claude Code discovers its project root, so the command file
+    we create ends up where claude -p will look for it.
     """
     current = Path.cwd()
     for parent in [current, *current.parents]:
-        if (parent / ".agents").is_dir():
+        if (parent / ".claude").is_dir():
             return parent
     return current
 
@@ -42,15 +42,15 @@ def run_single_query(
 ) -> bool:
     """Run a single query and return whether the skill was triggered.
 
-    Creates a command file in .agents/commands/ so it appears in Copilot's
-    available_skills list, then runs `copilot` with the raw query.
+    Creates a command file in .claude/commands/ so it appears in Claude's
+    available_skills list, then runs `claude -p` with the raw query.
     Uses --include-partial-messages to detect triggering early from
     stream events (content_block_start) rather than waiting for the
     full assistant message, which only arrives after tool execution.
     """
     unique_id = uuid.uuid4().hex[:8]
     clean_name = f"{skill_name}-skill-{unique_id}"
-    project_commands_dir = Path(project_root) / ".agents" / "commands"
+    project_commands_dir = Path(project_root) / ".claude" / "commands"
     command_file = project_commands_dir / f"{clean_name}.md"
 
     try:
@@ -68,8 +68,8 @@ def run_single_query(
         command_file.write_text(command_content)
 
         cmd = [
-            "copilot",
-            query,
+            "claude",
+            "-p", query,
             "--output-format", "stream-json",
             "--verbose",
             "--include-partial-messages",
@@ -77,8 +77,10 @@ def run_single_query(
         if model:
             cmd.extend(["--model", model])
 
-        # Use the existing environment for Copilot CLI
-        env = os.environ.copy()
+        # Remove CLAUDECODE env var to allow nesting claude -p inside a
+        # Claude Code session. The guard is for interactive terminal conflicts;
+        # programmatic subprocess usage is safe.
+        env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
 
         process = subprocess.Popen(
             cmd,
@@ -263,7 +265,7 @@ def main():
     parser.add_argument("--timeout", type=int, default=30, help="Timeout per query in seconds")
     parser.add_argument("--runs-per-query", type=int, default=3, help="Number of runs per query")
     parser.add_argument("--trigger-threshold", type=float, default=0.5, help="Trigger rate threshold")
-    parser.add_argument("--model", default=None, help="Model to use for copilot CLI (default: user's configured model)")
+    parser.add_argument("--model", default=None, help="Model to use for claude -p (default: user's configured model)")
     parser.add_argument("--verbose", action="store_true", help="Print progress to stderr")
     args = parser.parse_args()
 

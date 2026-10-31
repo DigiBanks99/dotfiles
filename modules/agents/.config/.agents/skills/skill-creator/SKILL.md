@@ -324,7 +324,7 @@ Keep going until:
 
 ## Advanced: Blind comparison
 
-For situations where you want a more rigorous comparison between two versions of a skill (e.g., the user asks "is the new version actually better?"), there's a blind comparison system. Read `agents/comparator.md` and `agents/analyzer.md` (`comparator.agent.md` and `analyzer.agent.md` for copilot) for the details. The basic idea is: give two outputs to an independent agent without telling it which is which, and let it judge quality. Then analyze why the winner won.
+For situations where you want a more rigorous comparison between two versions of a skill (e.g., the user asks "is the new version actually better?"), there's a blind comparison system. Read `agents/comparator.md` and `agents/analyzer.md` for the details. The basic idea is: give two outputs to an independent agent without telling it which is which, and let it judge quality. Then analyze why the winner won.
 
 This is optional, requires subagents, and most users won't need it. The human review loop is usually sufficient.
 
@@ -458,19 +458,11 @@ If you're in Cowork, the main things to know are:
 
 ## Reference files
 
-For Claude:
-
 The agents/ directory contains instructions for specialized subagents. Read them when you need to spawn the relevant subagent.
 
 - `agents/grader.md` — How to evaluate assertions against outputs
 - `agents/comparator.md` — How to do blind A/B comparison between two outputs
 - `agents/analyzer.md` — How to analyze why one version beat another
-
-For Copilot:
-
-- `agents/grader.agent.md` — How to evaluate assertions against outputs
-- `agents/comparator.agent.md` — How to do blind A/B comparison between two outputs
-- `agents/analyzer.agent.md` — How to analyze why one version beat another
 
 The references/ directory has additional documentation:
 - `references/schemas.md` — JSON structures for evals.json, grading.json, etc.
