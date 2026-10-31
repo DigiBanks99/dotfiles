@@ -1,9 +1,5 @@
 . $env:DOTFILES_HOME/bin/bootstrap.ps1
 
-# Update Ollama
-Log-Info "Updating Ollama..."
-winget upgrade -e --id "Ollama.Ollama" -h
-
 # Update Claude
 Log-Info "Updating Claude..."
 winget upgrade -e --id "Anthropic.Claude" -h

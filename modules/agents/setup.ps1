@@ -1,9 +1,5 @@
 . $env:DOTFILES_HOME/bin/bootstrap.ps1
 
-# Install Ollama
-Log-Info "Installing Ollama..."
-winget install -e --id "Ollama.Ollama" -h
-
 # Install Claude
 Log-Info "Installing Claude..."
 winget install -e --id "Anthropic.Claude" -h
