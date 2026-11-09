@@ -8,6 +8,14 @@ winget install -e --id "Anthropic.Claude" -h
 Log-Info "Installing GitHub Copilot CLI..."
 winget install -e --id "GitHub.Copilot" -h
 
+# Install agentsview
+if (-not (Get-Command agentsview -ErrorAction SilentlyContinue)) {
+    Log-Info "Installing agentsview..."
+    powershell -ExecutionPolicy ByPass -c "irm https://agentsview.io/install.ps1 | iex"
+} else {
+    Log-Info "agentsview already installed."
+}
+
 $moduleConfig = Join-Path $env:DOTFILES_HOME "modules/agents/.config"
 
 function Set-DirSymlink {
