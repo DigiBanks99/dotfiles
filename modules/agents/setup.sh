@@ -16,9 +16,12 @@ else
         log_warn "No supported package manager found for GitHub Copilot CLI. Install manually."
 fi
 
-# Install agentsview
-if ! command -v agentsview &>/dev/null; then
-    log_info "Installing agentsview..."
+# Install agentsview (macOS: desktop app cask, which bundles the CLI)
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    log_info "Installing agentsview desktop app + CLI..."
+    brew list --cask agentsview &>/dev/null || brew install --cask agentsview
+elif ! command -v agentsview &>/dev/null; then
+    log_info "Installing agentsview CLI..."
     curl -fsSL https://agentsview.io/install.sh | bash
 else
     log_info "agentsview already installed."
