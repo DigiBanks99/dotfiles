@@ -8,12 +8,32 @@ winget install -e --id "Anthropic.Claude" -h
 Log-Info "Installing GitHub Copilot CLI..."
 winget install -e --id "GitHub.Copilot" -h
 
-# Install agentsview
+# Install agentsview CLI
 if (-not (Get-Command agentsview -ErrorAction SilentlyContinue)) {
-    Log-Info "Installing agentsview..."
+    Log-Info "Installing agentsview CLI..."
     powershell -ExecutionPolicy ByPass -c "irm https://agentsview.io/install.ps1 | iex"
 } else {
-    Log-Info "agentsview already installed."
+    Log-Info "agentsview CLI already installed."
+}
+
+# Install agentsview desktop app (no winget package; use the release MSI)
+$uninstallKeys = "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*", "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*"
+$agentsViewApp = Get-ItemProperty $uninstallKeys -ErrorAction SilentlyContinue | Where-Object { $_.DisplayName -like "AgentsView*" }
+if (-not $agentsViewApp) {
+    Log-Info "Installing agentsview desktop app..."
+    $arch = if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") { "arm64" } else { "amd64" }
+    $release = Invoke-RestMethod "https://api.github.com/repos/kenn-io/agentsview/releases/latest"
+    $asset = $release.assets | Where-Object { $_.name -like "AgentsView-*-windows-$arch.msi" } | Select-Object -First 1
+    if ($asset) {
+        $msi = Join-Path ([System.IO.Path]::GetTempPath()) $asset.name
+        Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $msi
+        Start-Process msiexec.exe -ArgumentList "/i", "`"$msi`"", "/qn" -Wait
+        Remove-Item $msi -Force
+    } else {
+        Log-Warn "No agentsview Windows MSI found in the latest release. Install it manually from GitHub Releases."
+    }
+} else {
+    Log-Info "agentsview desktop app already installed."
 }
 
 $moduleConfig = Join-Path $env:DOTFILES_HOME "modules/agents/.config"
