@@ -59,7 +59,7 @@ You can also call scripts directly:
 
 The project uses Native AOT (`PublishAot=true`), so dotnet module setup publishes a single executable and runs it at the end of setup to verify output.
 
-.NET SDKs are installed and updated per user with [dotnetup](https://learn.microsoft.com/dotnet/core/tools/dotnetup/) (in `~/.dotnetup`). The shell profiles activate them with `dotnetup env script`.
+.NET SDKs are installed and updated per user with [dotnetup](https://learn.microsoft.com/dotnet/core/tools/dotnetup/) (in `~/.dotnetup`). The shell profiles activate them with `dotnetup env script`. Native AOT also needs a native toolchain. On Windows, setup adds the Visual Studio Build Tools C++ workload. On Linux/macOS, install clang or Xcode Command Line Tools.
 
 - Linux/macOS output location: `~/.dotfiles/bin/dotfiles`
 - Windows output location: `~/.dotfiles/bin/dotfiles.exe`

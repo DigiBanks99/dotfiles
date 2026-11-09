@@ -29,4 +29,32 @@ dotnet tool install -g dotnet-dev-certs
 $DOTNET_TOOL_PATH = Join-Path $env:USERPROFILE ".dotnet/tools"
 $env:PATH = "$($env:PATH);$DOTNET_TOOL_PATH"
 
+# Native AOT needs the MSVC linker and a Windows SDK
+Log-Info "Ensuring C++ build tools for Native AOT..."
+$vcComponent = "Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
+$vsInstallerDir = Join-Path ${env:ProgramFiles(x86)} "Microsoft Visual Studio/Installer"
+$vswhere = Join-Path $vsInstallerDir "vswhere.exe"
+
+$hasVcTools = (Test-Path $vswhere) -and
+    -not [string]::IsNullOrWhiteSpace((& $vswhere -products * -requires $vcComponent -property installationPath))
+
+if ($hasVcTools) {
+    Log-Info "C++ build tools already installed."
+} else {
+    $vsInstallPath = if (Test-Path $vswhere) {
+        & $vswhere -products * -latest -property installationPath
+    }
+    $vcArgs = "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --passive --norestart --wait"
+
+    if (-not [string]::IsNullOrWhiteSpace($vsInstallPath)) {
+        Log-Info "Adding C++ build tools workload to '$vsInstallPath' (UAC prompt)..."
+        Start-Process -FilePath (Join-Path $vsInstallerDir "setup.exe") `
+            -ArgumentList "modify --installPath `"$vsInstallPath`" $vcArgs" `
+            -Verb RunAs -Wait
+    } else {
+        Log-Info "Installing Visual Studio Build Tools with C++ workload..."
+        winget install -e --id "Microsoft.VisualStudio.2022.BuildTools" -h --override $vcArgs
+    }
+}
+
 . "$env:DOTFILES_HOME/modules/dotnet/run-single-executable.ps1"
