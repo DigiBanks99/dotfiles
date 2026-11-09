@@ -28,6 +28,25 @@
       "skillFolderHash": "b08af72a999f85794836be2094b8a885090daa08",
       "installedAt": "2026-10-24T09:07:17.887Z",
       "updatedAt": "2026-10-24T09:07:17.887Z"
+    },
+    "microsoft-foundry": {
+      "source": "microsoft/azure-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/microsoft/azure-skills.git",
+      "skillPath": ".github/plugins/azure-skills/skills/microsoft-foundry/SKILL.md",
+      "skillFolderHash": "15b425217b643229a34baf34eb1def65bb637308",
+      "installedAt": "2026-11-01T05:41:50.737Z",
+      "updatedAt": "2026-11-01T05:41:50.737Z"
+    },
+    "archify": {
+      "source": "archify.si",
+      "sourceType": "well-known",
+      "sourceUrl": "https://archify.si/.well-known/agent-skills/archify.54ba0383833e094f3262e543ffb4e3b8426b611e5c0db024a5662b4cd5320577.zip",
+      "skillFolderHash": "",
+      "sourceBaseUrl": "https://archify.si",
+      "wellKnownDigest": "sha256:54ba0383833e094f3262e543ffb4e3b8426b611e5c0db024a5662b4cd5320577",
+      "installedAt": "2026-11-04T11:17:41.711Z",
+      "updatedAt": "2026-11-04T11:17:41.711Z"
     }
   },
   "dismissed": {
