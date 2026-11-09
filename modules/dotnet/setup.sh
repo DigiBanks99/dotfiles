@@ -32,4 +32,9 @@ for tool in "${GLOBAL_TOOLS[@]}"; do
     dotnet tool install -g "$tool" 2>/dev/null || dotnet tool update -g "$tool"
 done
 
+# Native AOT needs a native toolchain (clang on Linux, Xcode CLT on macOS)
+if ! command -v clang >/dev/null 2>&1; then
+    echo "[WRN]: clang not found; Native AOT publish will fail. Install clang (and zlib1g-dev on Debian/Ubuntu) or Xcode Command Line Tools."
+fi
+
 bash "$DOTFILES_HOME/modules/dotnet/run-single-executable.sh"
