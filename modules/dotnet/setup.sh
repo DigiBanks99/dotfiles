@@ -2,19 +2,23 @@
 
 set -euo pipefail
 
-install_dotnet_sdk() {
-    local version="$1"
-    echo "[INF]: Installing .NET SDK $version..."
+# Install dotnetup (user-level .NET toolchain manager)
+DOTNETUP_HOME="$HOME/.dotnetup"
+if [[ ! -x "$DOTNETUP_HOME/dotnetup" ]]; then
+    echo "[INF]: Installing dotnetup..."
+    curl -fsSL https://aka.ms/dotnetup/get-dotnetup.sh | bash
+else
+    echo "[INF]: dotnetup is already installed, skipping."
+fi
+export PATH="$DOTNETUP_HOME:$PATH"
 
-    # Use the official Microsoft install script
-    curl -fsSL https://dot.net/v1/dotnet-install.sh | \
-        bash -s -- --channel "$version" --install-dir "$HOME/.dotnet"
-}
+echo "[INF]: Installing .NET SDKs with dotnetup..."
+dotnetup install 8.0 10.0 --interactive false --no-progress
 
-install_dotnet_sdk "10.0"
-
-export DOTNET_ROOT="$HOME/.dotnet"
-export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
+# Don't let dotnetup edit shell profiles; _zprofile.zsh activates it via `dotnetup env script`.
+dotnetup env set none --dotnetup-on-path true
+eval "$(dotnetup env script --shell bash --dotnet --dotnetup)"
+export PATH="$HOME/.dotnet/tools:$PATH"
 
 GLOBAL_TOOLS=(
     dotnet-ef

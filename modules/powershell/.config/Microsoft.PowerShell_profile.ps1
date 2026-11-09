@@ -219,6 +219,12 @@ oh-my-posh init pwsh --config "$DOTFILES_HOME/modules/oh-my-posh/.config/omp.jso
 
 mise activate pwsh | Out-String | Invoke-Expression
 
+# dotnetup-managed .NET SDKs
+$env:PATH="$(Join-Path $env:USERPROFILE ".dotnetup");$env:PATH"
+if (Get-Command dotnetup -ErrorAction SilentlyContinue) {
+    dotnetup env script --shell pwsh --dotnet | Out-String | Invoke-Expression
+}
+
 if ($env:TERM_PROGRAM -eq "vscode") { . "$(code --locate-shell-integration-path pwsh)" }
 
 Set-Alias -Name docker -Value podman
