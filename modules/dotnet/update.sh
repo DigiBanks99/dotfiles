@@ -2,17 +2,13 @@
 
 set -euo pipefail
 
-install_dotnet_sdk() {
-    local version="$1"
-    echo "[INF]: Updating .NET SDK $version..."
-    curl -fsSL https://dot.net/v1/dotnet-install.sh | \
-        bash -s -- --channel "$version" --install-dir "$HOME/.dotnet"
-}
+export PATH="$HOME/.dotnetup:$PATH"
 
-install_dotnet_sdk "10.0"
-
-export DOTNET_ROOT="$HOME/.dotnet"
-export PATH="$DOTNET_ROOT:$DOTNET_ROOT/tools:$PATH"
+echo "[INF]: Updating dotnetup and .NET SDKs..."
+dotnetup self update
+dotnetup update --interactive false --no-progress
+eval "$(dotnetup env script --shell bash --dotnet --dotnetup)"
+export PATH="$HOME/.dotnet/tools:$PATH"
 
 GLOBAL_TOOLS=(
     dotnet-ef
