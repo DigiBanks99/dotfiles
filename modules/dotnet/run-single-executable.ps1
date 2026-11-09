@@ -34,6 +34,11 @@ dotnet publish "$env:DOTFILES_HOME/dotfiles.csproj" `
     -c Release `
     -r $runtimeId
 
+if ($LASTEXITCODE -ne 0) {
+    Log-Error "dotnet publish failed (exit code $LASTEXITCODE); skipping single executable install."
+    return
+}
+
 Copy-Item -Path $publishedBinary -Destination $outputBinary -Force
 if (-not $runtimeId.StartsWith("win-")) {
     chmod +x $outputBinary
