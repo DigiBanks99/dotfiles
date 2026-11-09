@@ -16,6 +16,14 @@ else
         log_warn "No supported package manager found for GitHub Copilot CLI. Install manually."
 fi
 
+# Install agentsview
+if ! command -v agentsview &>/dev/null; then
+    log_info "Installing agentsview..."
+    curl -fsSL https://agentsview.io/install.sh | bash
+else
+    log_info "agentsview already installed."
+fi
+
 # Symlink .agents
 log_info "Linking ~/.agents..."
 if [ -e "$HOME/.agents" ] || [ -L "$HOME/.agents" ]; then
