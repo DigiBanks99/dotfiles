@@ -211,18 +211,41 @@ $env:PATH="$DOTFILES_BIN;$LOCAL_BIN;C:\Program Files\Rust stable GNU 1.93\bin;$e
 
 $env:PROGRAMS=$(Join-Path "C:" "Programs")
 
-Import-Module posh-git
-Import-Module PSReadLine
-Import-Module Terminal-Icons
+# Run a tool's "init" command once and cache its output. The cache is rebuilt
+# when the tool's exe changes (or when $Key changes, e.g. config path).
+# Delete $env:LOCALAPPDATA\pwsh-profile-cache to force a refresh.
+$script:__INIT_CACHE__ = Join-Path $env:LOCALAPPDATA "pwsh-profile-cache"
+function Import-CachedInit {
+    param([string]$Name, [string]$Exe, [scriptblock]$Generate, [string]$Key = '')
+    $cmd = Get-Command $Exe -CommandType Application -ErrorAction Ignore | Select-Object -First 1
+    if (-not $cmd) { return }
+    $file = Join-Path $script:__INIT_CACHE__ "$Name.ps1"
+    $stamp = "# $($cmd.Source)|$($cmd.Version)|$([IO.File]::GetLastWriteTimeUtc($cmd.Source).Ticks)|$Key"
+    if (-not ((Test-Path $file) -and ([IO.File]::ReadLines($file) | Select-Object -First 1) -eq $stamp)) {
+        New-Item -ItemType Directory -Path $script:__INIT_CACHE__ -Force | Out-Null
+        Set-Content -Path $file -Value ($stamp + "`n" + ((& $Generate) | Out-String)) -Encoding utf8
+    }
+    . $file
+}
 
 oh-my-posh init pwsh --config "$DOTFILES_HOME/modules/oh-my-posh/.config/omp.json" | Invoke-Expression
 
-mise activate pwsh | Out-String | Invoke-Expression
+# mise via shims: spawning mise.exe on every shell start costs ~1s here, and
+# `mise activate` output can't be cached (it embeds the current PATH). Shims
+# resolve the per-directory tool versions lazily, at the time a tool is run.
+$env:PATH="$(Join-Path $env:LOCALAPPDATA "mise\shims");$env:PATH"
 
 # dotnetup-managed .NET SDKs
 $env:PATH="$(Join-Path $env:USERPROFILE ".dotnetup");$env:PATH"
-if (Get-Command dotnetup -ErrorAction SilentlyContinue) {
-    dotnetup env script --shell pwsh --dotnet | Out-String | Invoke-Expression
+Import-CachedInit dotnetup dotnetup { dotnetup env script --shell pwsh --dotnet }
+
+# Defer slow, non-essential modules until the first idle moment after the prompt
+# is shown. PSReadLine is already loaded by pwsh itself, so it isn't imported.
+$null = Register-EngineEvent -SourceIdentifier PowerShell.OnIdle -MaxTriggerCount 1 -Action {
+    # posh-git installs its own prompt on import; keep oh-my-posh's.
+    $prompt = (Get-Item Function:\prompt).ScriptBlock
+    Import-Module posh-git, Terminal-Icons -Global -ErrorAction Ignore
+    Set-Item Function:\global:prompt $prompt
 }
 
 if ($env:TERM_PROGRAM -eq "vscode") { . "$(code --locate-shell-integration-path pwsh)" }
