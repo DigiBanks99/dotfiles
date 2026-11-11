@@ -44,16 +44,22 @@ if ($hasVcTools) {
     $vsInstallPath = if (Test-Path $vswhere) {
         & $vswhere -products * -latest -property installationPath
     }
-    $vcArgs = "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --passive --norestart --wait"
+    $vcArgs = "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --passive --norestart"
 
     if (-not [string]::IsNullOrWhiteSpace($vsInstallPath)) {
+        # The installer's setup.exe rejects --wait (only the vs_*.exe bootstrappers accept it);
+        # Start-Process -Wait blocks until it finishes instead.
         Log-Info "Adding C++ build tools workload to '$vsInstallPath' (UAC prompt)..."
-        Start-Process -FilePath (Join-Path $vsInstallerDir "setup.exe") `
+        $vsSetup = Start-Process -FilePath (Join-Path $vsInstallerDir "setup.exe") `
             -ArgumentList "modify --installPath `"$vsInstallPath`" $vcArgs" `
-            -Verb RunAs -Wait
+            -Verb RunAs -Wait -PassThru
+        # 3010 = success, reboot required
+        if ($vsSetup.ExitCode -notin 0, 3010) {
+            Log-Error "Visual Studio Installer failed (exit code $($vsSetup.ExitCode)); Native AOT publish will not work."
+        }
     } else {
         Log-Info "Installing Visual Studio Build Tools with C++ workload..."
-        winget install -e --id "Microsoft.VisualStudio.2022.BuildTools" -h --override $vcArgs
+        winget install -e --id "Microsoft.VisualStudio.2022.BuildTools" -h --override "$vcArgs --wait"
     }
 }
 
