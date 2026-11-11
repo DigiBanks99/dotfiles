@@ -12,7 +12,7 @@ $env:PATH = "$dotnetupHome;$env:PATH"
 
 # Install .NET SDKs
 Log-Info "Installing .NET SDKs with dotnetup..."
-dotnetup install 8.0 10.0 --interactive false --no-progress
+dotnetup sdk install latest 8.0 10.0 11.0 --interactive false --no-progress
 
 # Don't let dotnetup edit shell profiles; the managed profiles activate it via `dotnetup env script`.
 dotnetup env set none --dotnetup-on-path true
